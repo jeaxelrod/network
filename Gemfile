@@ -38,3 +38,7 @@ gem 'spring',        group: :development
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
+gem 'react-rails', '~> 1.0.0.pre', github: 'reactjs/react-rails'
+gem 'therubyracer', :platforms => :ruby
+gem 'therubyrhino', :platforms => :jruby
+
