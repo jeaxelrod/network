@@ -41,4 +41,8 @@ gem 'spring',        group: :development
 gem 'react-rails', '~> 1.0.0.pre', github: 'reactjs/react-rails'
 gem 'therubyracer', :platforms => :ruby
 gem 'therubyrhino', :platforms => :jruby
+group :development do
+  gem "better_errors"
+  gem "binding_of_caller"
+end
 
