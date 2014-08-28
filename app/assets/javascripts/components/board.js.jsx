@@ -1,17 +1,19 @@
 /** @jsx React.DOM */
-var WHITE = 1;
-var BLACK = 2;
 var Board = React.createClass({
   getInitialState: function() {
     return {
       points: [],
+      color: 'black'
     };
   },
 
-  handleChipPlacement: function(color, point) {
+  handleChipPlacement: function(point) {
     points = this.state.points;
-    points.push([color, point]);
+    points.push([this.state.color, point]);
     this.setState({points: points});
+  },
+  handleColorChange: function(event) {
+    this.setState({color: event.target.value});
   },
   render: function() {
     var board_rows = [];
@@ -31,9 +33,23 @@ var Board = React.createClass({
 
     }
     return (
-      <table className="board_table">
-        {board_rows}
-      </table>
+      <div>
+        <ControlForm  handleColorChange= {this.handleColorChange} />
+        <table className="board_table">
+          {board_rows}
+        </table>
+      </div>
+    );
+  }
+});
+
+var ControlForm = React.createClass({
+  render: function() {
+    return ( 
+      <div onChange={this.props.handleColorChange}>
+        <input type="radio" name="color" value="black" defaultChecked >Black</input>
+        <input type="radio" name="color" value="white" >White</input>
+      </div>
     );
   }
 });
@@ -54,7 +70,7 @@ var BoardRow = React.createClass({
       for (var k=0; k<this.props.points.length; k++) {
         var point = this.props.points[k];
         if (point[1] == i) {
-          if (point[0] == BLACK) {
+          if (point[0] == "white") {
             state = "white";
           } else {
             state = "black";
@@ -63,7 +79,7 @@ var BoardRow = React.createClass({
       }
       squares.push(<BoardSquare 
                       id={this.props.row_id.toString() + i}
-                      state = {state}
+                      chip = {state}
                       inactive = {inactive_square}
                       onUserClick = {this.props.onUserClick}
                    />)
@@ -78,7 +94,7 @@ var BoardRow = React.createClass({
 
 var BoardSquare = React.createClass({
   onClick: function() {
-    this.props.onUserClick(WHITE, this.props.id);
+    this.props.onUserClick(this.props.id);
   },
   render: function() {
     var cx = React.addons.classSet;
@@ -88,9 +104,9 @@ var BoardSquare = React.createClass({
     });
     var chip;
     if (!this.props.inactive) {
-      if (this.props.state == "white") {
+      if (this.props.chip == "white") {
         chip = <Chip color= "white" point={this.props.id} />
-      } else if (this.props.state == "black") {
+      } else if (this.props.chip == "black") {
         chip = <Chip color="black" point={this.props.id} />
       }
     }
