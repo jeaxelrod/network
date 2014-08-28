@@ -37,4 +37,7 @@ Rails.application.configure do
 
   #Keep react unminified for debugging
   config.react.variant = :development
+
+  #Add react addons
+  config.react.addons = true
 end

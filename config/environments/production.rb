@@ -83,4 +83,5 @@ Rails.application.configure do
 
   #Minify react
   config.react.variant = :production
+  config.react.addons = true
 end
