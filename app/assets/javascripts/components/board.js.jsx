@@ -46,7 +46,7 @@ var BoardRow = React.createClass({
       for (var k=0; k<this.props.points.length; k++) {
         var point = this.props.points[k];
         if (point[1] == i) {
-          if (point[0] == WHITE) {
+          if (point[0] == BLACK) {
             state = "white";
           } else {
             state = "black";
@@ -75,12 +75,25 @@ var BoardSquare = React.createClass({
     var cx = React.addons.classSet;
     var classes = cx({
       'board_square': true,
-      'white': this.props.state == "white",
-      'black': this.props.state == "black"
     });
-    console.log(classes);
+    var chip;
+    if (this.props.state == "white") {
+      chip = <Chip color= "white" />
+    } else if (this.props.state == "black") {
+      chip = <Chip color="black" />
+    }
     return (
-      <td onClick={this.onClick} className={classes} id={this.props.id} ></td>
+      <td onClick={this.onClick} className={classes} id={this.props.id} >
+        {chip}
+      </td>
+    );
+  }
+});
+
+var Chip = React.createClass({
+  render: function() {
+    return (
+      <div className={this.props.color + " chip"}></div>
     );
   }
 });
