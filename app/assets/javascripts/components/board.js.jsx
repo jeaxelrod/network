@@ -9,6 +9,20 @@ var Board = React.createClass({
 
   handleChipPlacement: function(point) {
     points = this.state.points;
+    var color = this.state.color;
+    if (color == "white") {
+      var excluded_points = ["10", "20", "30", "40", "50", "60", 
+                             "17", "27", "37", "47", "57", "67"]
+      if (excluded_points.indexOf(point) > -1) {
+        return;
+      }
+    } else if (color == "black") {
+      var excluded_points = ["01", "02", "03", "04", "05", "06", 
+                             "71", "72", "73", "74", "75", "76"] 
+      if (excluded_points.indexOf(point) > -1) {
+        return;
+      }
+    }
     points.push([this.state.color, point]);
     this.setState({points: points});
   },
@@ -21,8 +35,8 @@ var Board = React.createClass({
       var points = []; 
       for (var k=0; k<this.state.points.length; k++) {
         var point = this.state.points[k];
-        if (point[1][0] == i) {
-          points.push([point[0], point[1][1]]);
+        if (point[1][1] == i) {
+          points.push([point[0], point[1]]);
         }
       }
       board_rows.push(<BoardRow 
@@ -69,7 +83,7 @@ var BoardRow = React.createClass({
 
       for (var k=0; k<this.props.points.length; k++) {
         var point = this.props.points[k];
-        if (point[1] == i) {
+        if (point[1][0] == i) {
           if (point[0] == "white") {
             state = "white";
           } else {
@@ -78,7 +92,7 @@ var BoardRow = React.createClass({
         }
       }
       squares.push(<BoardSquare 
-                      id={this.props.row_id.toString() + i}
+                      id={i + this.props.row_id.toString()}
                       chip = {state}
                       inactive = {inactive_square}
                       onUserClick = {this.props.onUserClick}
