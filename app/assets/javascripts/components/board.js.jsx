@@ -24,7 +24,7 @@ var Board = React.createClass({
         }
       }
       board_rows.push(<BoardRow 
-                        id={i}
+                        row_id={i}
                         points={points}
                         onUserClick = {this.handleChipPlacement}
                       />);
@@ -42,7 +42,15 @@ var BoardRow = React.createClass({
   render: function() {
     var squares = [];
     for (var i=0; i<8; i++) {
+      var inactive_square = false;
       var state = "";
+
+      if (this.props.row_id == 0 || this.props.row_id == 7) {
+        if (i == 0 || i == 7) {
+          inactive_square = true;
+        }
+      }
+
       for (var k=0; k<this.props.points.length; k++) {
         var point = this.props.points[k];
         if (point[1] == i) {
@@ -54,8 +62,9 @@ var BoardRow = React.createClass({
         }
       }
       squares.push(<BoardSquare 
-                      id={this.props.id.toString() + i}
+                      id={this.props.row_id.toString() + i}
                       state = {state}
+                      inactive = {inactive_square}
                       onUserClick = {this.props.onUserClick}
                    />)
     }
@@ -75,12 +84,15 @@ var BoardSquare = React.createClass({
     var cx = React.addons.classSet;
     var classes = cx({
       'board_square': true,
+      'inactive': this.props.inactive
     });
     var chip;
-    if (this.props.state == "white") {
-      chip = <Chip color= "white" />
-    } else if (this.props.state == "black") {
-      chip = <Chip color="black" />
+    if (!this.props.inactive) {
+      if (this.props.state == "white") {
+        chip = <Chip color= "white" point={this.props.id} />
+      } else if (this.props.state == "black") {
+        chip = <Chip color="black" point={this.props.id} />
+      }
     }
     return (
       <td onClick={this.onClick} className={classes} id={this.props.id} >
@@ -93,7 +105,7 @@ var BoardSquare = React.createClass({
 var Chip = React.createClass({
   render: function() {
     return (
-      <div className={this.props.color + " chip"}></div>
+      <div className={this.props.color + " chip " + this.props.point} ></div>
     );
   }
 });
