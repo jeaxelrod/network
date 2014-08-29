@@ -114,7 +114,7 @@ var BoardSquare = React.createClass({
     var cx = React.addons.classSet;
     var classes = cx({
       'board_square': true,
-      'inactive': this.props.inactive
+      'inactive': this.props.inactive,
     });
     var chip;
     if (!this.props.inactive) {
@@ -125,7 +125,7 @@ var BoardSquare = React.createClass({
       }
     }
     return (
-      <td onClick={this.onClick} className={classes} id={this.props.id} >
+      <td onClick={this.onClick} className={classes + " " + this.props.id} >
         {chip}
       </td>
     );
