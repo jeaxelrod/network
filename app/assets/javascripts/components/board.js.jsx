@@ -2,13 +2,13 @@
 var Board = React.createClass({
   getInitialState: function() {
     return {
-      points: [],
+      chips: [],
       color: 'black'
     };
   },
 
   handleChipPlacement: function(point) {
-    points = this.state.points;
+    var chips = this.state.chips;
     var color = this.state.color;
     if (color == "white") {
       var excluded_points = ["10", "20", "30", "40", "50", "60", 
@@ -23,28 +23,37 @@ var Board = React.createClass({
         return;
       }
     }
-    points.push([this.state.color, point]);
-    this.setState({points: points});
+    chips.push({ color: this.state.color, x_cord: point[0], y_cord: point[1] });
+    this.setState({chips: chips});
   },
   handleColorChange: function(event) {
     this.setState({color: event.target.value});
   },
   render: function() {
     var board_rows = [];
-    for (var i=0; i<8; i++) {
-      var points = []; 
-      for (var k=0; k<this.state.points.length; k++) {
-        var point = this.state.points[k];
-        if (point[1][1] == i) {
-          points.push([point[0], point[1]]);
+    for (var j=0; j<8; j++) {
+      var row = [];
+      var tr = React.DOM.tr;
+      for (var i=0; i<8; i++) {
+        var inactive_square = false;
+        var color = "";
+        if ((j == 0 || j == 7) && (i == 0 || i == 7)) {
+          inactive_square = true;
         }
+        for (var k=0; k<this.state.chips.length; k++) {
+          var chip = this.state.chips[k];
+          if (chip.x_cord == i && chip.y_cord == j) {
+            color = chip.color;
+          }
+        }
+        row.push(<BoardSquare
+                    id = {i.toString() + j}
+                    chip = {color}
+                    inactive = {inactive_square}
+                    onUserClick = {this.handleChipPlacement}
+                  />);
       }
-      board_rows.push(<BoardRow 
-                        row_id={i}
-                        points={points}
-                        onUserClick = {this.handleChipPlacement}
-                      />);
-
+      board_rows.push(<tr>{row}</tr>);
     }
     return (
       <div>
@@ -64,44 +73,6 @@ var ControlForm = React.createClass({
         <input type="radio" name="color" value="black" defaultChecked >Black</input>
         <input type="radio" name="color" value="white" >White</input>
       </div>
-    );
-  }
-});
-
-var BoardRow = React.createClass({
-  render: function() {
-    var squares = [];
-    for (var i=0; i<8; i++) {
-      var inactive_square = false;
-      var state = "";
-
-      if (this.props.row_id == 0 || this.props.row_id == 7) {
-        if (i == 0 || i == 7) {
-          inactive_square = true;
-        }
-      }
-
-      for (var k=0; k<this.props.points.length; k++) {
-        var point = this.props.points[k];
-        if (point[1][0] == i) {
-          if (point[0] == "white") {
-            state = "white";
-          } else {
-            state = "black";
-          }
-        }
-      }
-      squares.push(<BoardSquare 
-                      id={i + this.props.row_id.toString()}
-                      chip = {state}
-                      inactive = {inactive_square}
-                      onUserClick = {this.props.onUserClick}
-                   />)
-    }
-    return (
-      <tr className="board_row">
-        {squares}
-      </tr>
     );
   }
 });
