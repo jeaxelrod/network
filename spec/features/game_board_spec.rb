@@ -15,4 +15,12 @@ feature "Board structure" do
 
     expect(page).to have_css "td div.chip"
   end
+  scenario "User adds a chip to an existing chip", js: true do
+    visit root_path
+    all('td.board_square')[1].click
+    page.choose "color", :unchecked => true
+    all('td.board_square')[1].click
+
+    expect(page).to have_css "td div.black.chip"
+  end
 end

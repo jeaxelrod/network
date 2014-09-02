@@ -53,7 +53,8 @@ var Board = React.createClass({
                     onUserClick = {this.handleChipPlacement}
                   />);
       }
-      board_rows.push(<tr>{row}</tr>);
+      var classString = "row" + j;
+      board_rows.push(<tr className={classString}>{row}</tr>);
     }
     return (
       <div>
@@ -79,7 +80,9 @@ var ControlForm = React.createClass({
 
 var BoardSquare = React.createClass({
   onClick: function() {
-    this.props.onUserClick(this.props.id);
+    if (this.props.chip == "") {
+      this.props.onUserClick(this.props.id);
+    }
   },
   render: function() {
     var cx = React.addons.classSet;
