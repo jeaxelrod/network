@@ -7,7 +7,7 @@ feature "Board structure" do
     expect(page).to have_css "table"
     expect(page).to have_css "tr"
     expect(page).to have_css "td.board_square"
-    expect { page.all("tr td.board_square").count.to eql(64) }
+    expect(page.all("tr td.board_square").count).to eql(64) 
   end
   scenario "User adds a chip to the board", js: true do
     visit root_path
@@ -22,5 +22,13 @@ feature "Board structure" do
     all('td.board_square')[1].click
 
     expect(page).to have_css "td div.black.chip"
+  end
+  scenario "Adding chip to two chips in a connected group", js: true do
+    visit root_path
+    all('td.board_square')[1].click
+    all('td.board_square')[2].click
+    all('td.board_square')[3].click
+
+    expect(page.all("div.chip").count).to eql(2) 
   end
 end
