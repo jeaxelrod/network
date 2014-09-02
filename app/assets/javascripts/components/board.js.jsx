@@ -29,6 +29,28 @@ var Board = React.createClass({
   handleColorChange: function(event) {
     this.setState({color: event.target.value});
   },
+  getConnectedChips: function(x_cord, y_cord) {
+    var connected_chips = [];
+    for (var k=0; k<this.state.chips.length; k++) {
+      var chip = this.state.chips[k];
+      var chip_x = parseInt(chip.x_cord);
+      var chip_y = parseInt(chip.y_cord);
+      var x = parseInt(x_cord);
+      var y = parseInt(y_cord);
+      if ((chip_x != x || chip_y != y) && this.state.color == chip.color) { 
+        if   (chip_x == x || 
+              chip_x == (x - 1) || 
+              chip_x == (x + 1)) {
+          if (chip_y == y ||
+              chip_y == (y - 1) ||
+              chip_y == (y + 1)) {
+            connected_chips.push(chip);
+          }
+        }
+      }
+    }
+    return connected_chips;
+  },
   render: function() {
     var board_rows = [];
     for (var j=0; j<8; j++) {
@@ -51,6 +73,7 @@ var Board = React.createClass({
                     chip = {color}
                     inactive = {inactive_square}
                     onUserClick = {this.handleChipPlacement}
+                    getConnectedChips = {this.getConnectedChips}
                   />);
       }
       var classString = "row" + j;
@@ -80,9 +103,24 @@ var ControlForm = React.createClass({
 
 var BoardSquare = React.createClass({
   onClick: function() {
-    if (this.props.chip == "") {
+    if (this.props.chip == "" && this.notConnectedChip()) {
       this.props.onUserClick(this.props.id);
     }
+  },
+  notConnectedChip: function() {
+    var point = this.props.id;
+    var connected_chips = this.props.getConnectedChips(point[0], point[1]);
+    if (connected_chips.length >= 2) {
+      return false;
+    }
+    for (var k=0; k<connected_chips.length; k++) {
+      var chip = connected_chips[k];
+      var second_connected_chips = this.props.getConnectedChips(chip.x_cord, chip.y_cord);
+      if (second_connected_chips.length > 0) {
+        return false;
+      }
+    }
+    return true;
   },
   render: function() {
     var cx = React.addons.classSet;

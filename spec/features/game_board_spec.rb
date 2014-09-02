@@ -31,4 +31,12 @@ feature "Board structure" do
 
     expect(page.all("div.chip").count).to eql(2) 
   end
+  scenario "Adding chip to two chips in a connected group", js: true do
+    visit root_path
+    all('td.board_square')[1].click
+    all('td.board_square')[3].click
+    all('td.board_square')[2].click
+
+    expect(page.all("div.chip").count).to eql(2) 
+  end
 end
