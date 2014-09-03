@@ -39,4 +39,67 @@ feature "Board structure" do
 
     expect(page.all("div.chip").count).to eql(2) 
   end
+  
+  scenario "Performing a step move", js: true do
+    visit root_path
+    all('td.board_square')[1].click
+    all('td.board_square')[2].click
+    all('td.board_square')[4].click
+    all('td.board_square')[5].click
+    all('td.board_square')[17].click
+    all('td.board_square')[18].click
+    all('td.board_square')[20].click
+    all('td.board_square')[21].click
+    all('td.board_square')[33].click
+    all('td.board_square')[34].click
+    all('td.board_square')[34].click
+    all('td.board_square')[35].click
+
+    expect(page.all("div.chip").count).to eql(10)
+    within(page.all("td.board_square")[33]) { expect(page).to have_css "div.chip" }
+    within(page.all("td.board_square")[34]) { expect(page).to_not have_css "div.chip" }
+    within(page.all("td.board_square")[35]) { expect(page).to have_css "div.chip" }
+  end
+  scenario "Performing a step move on the wrong color", js: true do
+    visit root_path
+    all('td.board_square')[1].click
+    all('td.board_square')[2].click
+    all('td.board_square')[4].click
+    all('td.board_square')[5].click
+    all('td.board_square')[17].click
+    all('td.board_square')[18].click
+    all('td.board_square')[20].click
+    all('td.board_square')[21].click
+    all('td.board_square')[33].click
+    all('td.board_square')[34].click
+    page.choose "color", :unchecked => true
+    all('td.board_square')[35].click
+    page.choose "color", :unchecked => true
+    all('td.board_square')[35].click
+
+    expect(page.all("div.chip").count).to eql(11)
+    expect(page).to_not have_css ".step_move"
+  end
+  scenario "Cancelling a step move", js: true do
+    visit root_path
+    all('td.board_square')[1].click
+    all('td.board_square')[2].click
+    all('td.board_square')[4].click
+    all('td.board_square')[5].click
+    all('td.board_square')[17].click
+    all('td.board_square')[18].click
+    all('td.board_square')[20].click
+    all('td.board_square')[21].click
+    all('td.board_square')[33].click
+    all('td.board_square')[34].click
+    all('td.board_square')[33].click
+    all('td.board_square')[33].click
+    all('td.board_square')[34].click
+    all('td.board_square')[35].click
+
+    expect(page.all("div.chip").count).to eql(10)
+    within(page.all("td.board_square")[33]) { expect(page).to have_css "div.chip" }
+    within(page.all("td.board_square")[34]) { expect(page).to_not have_css "div.chip" }
+    within(page.all("td.board_square")[35]) { expect(page).to have_css "div.chip" }
+  end
 end
