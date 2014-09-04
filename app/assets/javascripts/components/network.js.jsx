@@ -3,13 +3,27 @@ var Board = React.createClass({
   getInitialState: function() {
     return {
       chips: [],
+      networks: [],
       color: 'black',
       num_black_chips: 0,
       num_white_chips: 0,
       pendingStepMove: false
     };
   },
-
+  setAvailableNetworks: function(chips) {
+    $.ajax({
+      url: "/placeChip.json",
+      dataType: 'json',
+      type: 'POST',
+      data: {"chips": chips},
+      success: function(data) {
+        this.setState({networks: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error("/placeChip.json", status, err.toString());
+      }.bind(this)
+    });
+  },
   handleChipPlacement: function(point) {
     var chips = this.state.chips;
     var color = this.state.color;
@@ -31,13 +45,13 @@ var Board = React.createClass({
       num_black_chips++;
     }
     chips.push({ color: this.state.color, x_cord: point[0], y_cord: point[1] });
+    this.setAvailableNetworks(chips);
     this.setState({chips: chips, 
                    num_black_chips: num_black_chips, 
                    num_white_chips: num_white_chips});
   },
   startStepMove: function(point) {
     var chip = document.getElementsByClassName(point + " chip")[0];
-    console.log(chip);
     if ((this.state.color == "black" && this.state.num_black_chips == 10 && chip.className.contains("black")) ||
         (this.state.color == "white" && this.state.num_white_chips == 10 && chip.className.contains("white"))) {
       this.setState({pendingStepMove: true});
@@ -222,7 +236,9 @@ var Chip = React.createClass({
   }
 });
 
+/* TODO url props isn't working */
 React.renderComponent(
-  <Board />,
+  <Board url="placeChip.json" />,
   document.getElementById('board')
 );
+
