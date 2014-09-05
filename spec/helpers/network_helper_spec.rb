@@ -22,15 +22,15 @@ RSpec.describe NetworkHelper, :type => :helper do
                                     "2" => {"color" => "black", "x_coord" =>"3", "y_coord"=>"2"}} }
     it "should not search for more chips" do
       expect(NetworkHelper).to_not receive(:find_networks_from)
-      NetworkHelper.getNetworks(chips_no_link)
+      getNetworks(chips_no_link)
     end
     it "should search for more chips" do
       expect(NetworkHelper).to receive(:find_networks_from) { [1] }
-      NetworkHelper.getNetworks(chips_with_link)
+      getNetworks(chips_with_link)
     end
     it "should not search for more chips with a white chip blocking" do
       expect(NetworkHelper).to_not receive(:find_networks_form)
-      NetworkHelper.getNetworks(chips_with_white_block)
+      getNetworks(chips_with_white_block)
     end
   end  
 end

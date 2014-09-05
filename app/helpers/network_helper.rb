@@ -4,7 +4,7 @@ module NetworkHelper
   LEFT_WHITE_GOAL_AREAS = [1, 2, 3, 4, 5, 6]
   RIGHT_WHITE_GOAL_AREAS = [71, 72, 73, 74, 75, 76]
 
-  def self.getNetworks(chips)
+  def getNetworks(chips)
     black_chips = []
     white_chips = []
     black_networks = []
