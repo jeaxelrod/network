@@ -17,6 +17,7 @@ var Board = React.createClass({
       type: 'POST',
       data: {"chips": chips},
       success: function(data) {
+        console.log(data);
         this.setState({networks: data});
       }.bind(this),
       error: function(xhr, status, err) {
@@ -44,7 +45,7 @@ var Board = React.createClass({
       }
       num_black_chips++;
     }
-    chips.push({ color: this.state.color, x_cord: point[0], y_cord: point[1] });
+    chips.push({ color: this.state.color, x_coord: point[0], y_coord: point[1] });
     this.setAvailableNetworks(chips);
     this.setState({chips: chips, 
                    num_black_chips: num_black_chips, 
@@ -70,9 +71,9 @@ var Board = React.createClass({
     var chips = this.state.chips;
     for (var k=0; k< chips.length; k++) {
       var chip = chips[k];
-      if (prev_x == chip.x_cord && prev_y == chip.y_cord) {
-        chip.x_cord = new_x;
-        chip.y_cord = new_y;
+      if (prev_x == chip.x_coord && prev_y == chip.y_coord) {
+        chip.x_coord = new_x;
+        chip.y_coord = new_y;
         this.setState({chips: chips, pendingStepMove: false});
         return;
       }
@@ -88,14 +89,14 @@ var Board = React.createClass({
   handleColorChange: function(event) {
     this.setState({color: event.target.value});
   },
-  getConnectedChips: function(x_cord, y_cord) {
+  getConnectedChips: function(x_coord, y_coord) {
     var connected_chips = [];
     for (var k=0; k<this.state.chips.length; k++) {
       var chip = this.state.chips[k];
-      var chip_x = parseInt(chip.x_cord);
-      var chip_y = parseInt(chip.y_cord);
-      var x = parseInt(x_cord);
-      var y = parseInt(y_cord);
+      var chip_x = parseInt(chip.x_coord);
+      var chip_y = parseInt(chip.y_coord);
+      var x = parseInt(x_coord);
+      var y = parseInt(y_coord);
       if (this.state.pendingStepMove) {
         var choosen_chip = document.getElementsByClassName("step_move")[0]; 
         var choosen_point = choosen_chip.className.match(/\d\d/)[0];
@@ -132,7 +133,7 @@ var Board = React.createClass({
         }
         for (var k=0; k<this.state.chips.length; k++) {
           var chip = this.state.chips[k];
-          if (chip.x_cord == i && chip.y_cord == j) {
+          if (chip.x_coord == i && chip.y_coord == j) {
             color = chip.color;
           }
         }
@@ -199,7 +200,7 @@ var BoardSquare = React.createClass({
     }
     for (var k=0; k<connected_chips.length; k++) {
       var chip = connected_chips[k];
-      var second_connected_chips = this.props.getConnectedChips(chip.x_cord, chip.y_cord);
+      var second_connected_chips = this.props.getConnectedChips(chip.x_coord, chip.y_coord);
       if (second_connected_chips.length > 0) {
         return false;
       }
