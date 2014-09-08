@@ -13,24 +13,44 @@ require 'pry'
 # end
 RSpec.describe NetworkHelper, :type => :helper do
   include NetworkHelper
-  describe "finding first the first chip in a  network" do 
-    let(:chips_no_link) { {"0" => {"color" => "black", "x_coord" =>"1", "y_coord"=>"0"}}}
-    let(:chips_with_link) { {"0" => {"color" => "black", "x_coord" =>"1", "y_coord"=>"0"},
-                             "1" => {"color" => "black", "x_coord" =>"1", "y_coord"=>"4"}} }
-    let(:chips_with_white_block) { {"0" => {"color" => "black", "x_coord" =>"1", "y_coord"=>"0"},
-                                    "1" => {"color" => "white", "x_coord" =>"2", "y_coord"=>"1"},
-                                    "2" => {"color" => "black", "x_coord" =>"3", "y_coord"=>"2"}} }
-    it "should not search for more chips" do
-      expect(NetworkHelper).to_not receive(:find_networks_from)
-      getNetworks(chips_no_link)
+  describe "finding networks" do 
+    let(:chips) { {"0" => {"color" => "black", "coord" =>"20"},
+                   "1" => {"color" => "black", "coord" =>"60"},
+                   "2" => {"color" => "black", "coord" =>"42"},
+                   "3" => {"color" => "black", "coord" =>"13"},
+                   "4" => {"color" => "black", "coord" =>"33"},
+                   "5" => {"color" => "black", "coord" =>"25"},
+                   "6" => {"color" => "black", "coord" =>"35"},
+                   "7" => {"color" => "black", "coord" =>"55"},
+                   "8" => {"color" => "black", "coord" =>"65"},
+                   "9" => {"color" => "black", "coord" =>"57"}}
+                }
+    let(:networks) { get_networks(chips) } 
+
+    it "should not have any white networks" do
+      puts networks
+      expect(networks[:white][:complete].empty?).to eql(true)
+      expect(networks[:white][:incomplete].empty?).to eql(true)
     end
-    it "should search for more chips" do
-      expect(NetworkHelper).to receive(:find_networks_from) { [1] }
-      getNetworks(chips_with_link)
+    it "should have valid networks" do 
+      expect(networks[:black][:complete]).to       include([60, 65, 55, 33, 35, 57])
+      expect(networks[:black][:incomplete]).to_not include([60, 65, 55, 33, 35, 57])
+      expect(networks[:black][:complete]).to       include([20, 25, 35, 13, 33, 55, 57])
+      expect(networks[:black][:incomplete]).to_not include([20, 25, 35, 13, 33, 55, 57])
     end
-    it "should not search for more chips with a white chip blocking" do
-      expect(NetworkHelper).to_not receive(:find_networks_form)
-      getNetworks(chips_with_white_block)
+    it "should not have networks with more than one chip in a goal area" do
+      expect(networks[:black][:complete]).to_not   include([60, 20, 42, 33, 35, 57])
+      expect(networks[:black][:incomplete]).to_not include([60, 20, 42, 33, 35, 57])
+      expect(networks[:black][:complete]).to_not   include([20, 42, 60, 65, 55, 57])
+      expect(networks[:black][:incomplete]).to_not include([20, 42, 60, 65, 55, 57])
+    end
+    it "should not pass through the same chip twice" do
+      expect(networks[:black][:complete]).to_not   include([20, 25, 35, 55, 35, 57])
+      expect(networks[:black][:incomplete]).to_not include([20, 25, 35, 55, 35, 57])
+    end
+    it "should not have network that doesn't change direction after each chip" do
+      expect(networks[:black][:complete]).to_not   include([60, 42, 33, 35, 55, 57])
+      expect(networks[:black][:incomplete]).to_not include([60, 42, 33, 35, 55, 57])
     end
   end  
 end

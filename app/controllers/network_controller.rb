@@ -4,7 +4,7 @@ class NetworkController < ApplicationController
   end
   def placeChip
     @chips = params[:chips]
-    @networks = getNetworks(@chips)
+    @networks = get_networks(@chips)
     respond_to do |format|
       format.json do
         render json: @chips
