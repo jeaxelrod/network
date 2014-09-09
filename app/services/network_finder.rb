@@ -1,4 +1,4 @@
-class Networks
+class NetworkFinder
   attr_reader :white, :black, :network
   BLACK_GOAL_AREAS = [10, 20, 30, 40, 50, 60, 17, 27, 37, 47, 57, 67]
   WHITE_GOAL_AREAS = [1, 2, 3, 4, 5, 6, 71, 72, 73, 74, 75, 76]
@@ -21,17 +21,9 @@ class Networks
       @black_chips = params[:black_chips] if params[:black_chips]
       @white_chips = params[:white_chips] if params[:white_chips]
     end
-  end
-
-  def networks
-    if @networks_found
-      return @network 
-    else
-      @white = find_networks(:white)
-      @black = find_networks(:black)
-      @network = { :white => @white, :black => @black }
-      return @network
-    end
+    @white = find_networks(:white)
+    @black = find_networks(:black)
+    @network = { :white => @white, :black => @black }
   end
   
   private  

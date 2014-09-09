@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Networks, :type => :service do
+RSpec.describe NetworkFinder, :type => :service do
   describe "finding networks" do 
     before :all do
       chips = {"0" => {"color" => "black", "coord" =>"20"},
@@ -13,8 +13,7 @@ RSpec.describe Networks, :type => :service do
                "7" => {"color" => "black", "coord" =>"55"},
                "8" => {"color" => "black", "coord" =>"65"},
                "9" => {"color" => "black", "coord" =>"57"}}
-      @networks = Networks.new(:chips => chips)
-      @networks.networks
+      @networks = NetworkFinder.new(:chips => chips)
     end 
 
     it "should not have any white networks" do
