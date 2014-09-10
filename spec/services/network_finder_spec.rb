@@ -3,16 +3,16 @@ require "rails_helper"
 RSpec.describe NetworkFinder, :type => :service do
   describe "finding networks" do 
     before :all do
-      chips = {"0" => {"color" => "black", "coord" =>"20"},
-               "1" => {"color" => "black", "coord" =>"60"},
-               "2" => {"color" => "black", "coord" =>"42"},
-               "3" => {"color" => "black", "coord" =>"13"},
-               "4" => {"color" => "black", "coord" =>"33"},
-               "5" => {"color" => "black", "coord" =>"25"},
-               "6" => {"color" => "black", "coord" =>"35"},
-               "7" => {"color" => "black", "coord" =>"55"},
-               "8" => {"color" => "black", "coord" =>"65"},
-               "9" => {"color" => "black", "coord" =>"57"}}
+      chips = {"0" => {"color" => "black", "point" =>"20"},
+               "1" => {"color" => "black", "point" =>"60"},
+               "2" => {"color" => "black", "point" =>"42"},
+               "3" => {"color" => "black", "point" =>"13"},
+               "4" => {"color" => "black", "point" =>"33"},
+               "5" => {"color" => "black", "point" =>"25"},
+               "6" => {"color" => "black", "point" =>"35"},
+               "7" => {"color" => "black", "point" =>"55"},
+               "8" => {"color" => "black", "point" =>"65"},
+               "9" => {"color" => "black", "point" =>"57"}}
       @networks = NetworkFinder.new(:chips => chips)
     end 
 
