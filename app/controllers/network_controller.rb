@@ -4,10 +4,12 @@ class NetworkController < ApplicationController
   end
   def placeChip
     @chips = params[:chips]
-    @networks = NetworkFinder.new(:chips => @chips) 
+    @network_finder = NetworkFinder.new(:chips => @chips) 
+
+    @networks =  JSON.generate({:white => @network_finder.white, :black => @network_finder.black}) 
     respond_to do |format|
       format.json do
-        render json: @chips
+        render json: @networks
       end
     end
   end

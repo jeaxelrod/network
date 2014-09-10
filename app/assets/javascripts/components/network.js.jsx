@@ -3,11 +3,13 @@ var Board = React.createClass({
   getInitialState: function() {
     return {
       chips: [],
-      networks: [],
-      color: 'black',
+      networks: {"white": {"incomplete": [], "complete": []} , 
+                 "black": {"incomplete": [], "complete": []}},
+      color: 'white',
       num_black_chips: 0,
       num_white_chips: 0,
-      pendingStepMove: false
+      pendingStepMove: false,
+      winner: ""
     };
   },
   setAvailableNetworks: function(chips) {
@@ -17,19 +19,27 @@ var Board = React.createClass({
       type: 'POST',
       data: {"chips": chips},
       success: function(data) {
-        console.log(data);
-        this.setState({networks: data});
+        var winner = this.setWinner(data);
+        this.setState({networks: data, winner: winner});
       }.bind(this),
       error: function(xhr, status, err) {
-        console.error("/placeChip.json", status, err.toString());
       }.bind(this)
     });
+  },
+  setWinner: function(networks) {
+    if (networks["white"]["complete"].length > 0) {
+      return "white";
+    } else if (networks["black"]["complete"].length > 0) {
+      return "black";
+    }
+    return "";
   },
   handleChipPlacement: function(point) {
     var chips = this.state.chips;
     var color = this.state.color;
     var num_white_chips = this.state.num_white_chips;
     var num_black_chips = this.state.num_black_chips;
+    var new_color;
     if (color == "white") {
       var excluded_points = ["10", "20", "30", "40", "50", "60", 
                              "17", "27", "37", "47", "57", "67"]
@@ -37,6 +47,7 @@ var Board = React.createClass({
         return;
       }
       num_white_chips++;
+      new_color = "black";
     } else if (color == "black") {
       var excluded_points = ["01", "02", "03", "04", "05", "06", 
                              "71", "72", "73", "74", "75", "76"] 
@@ -44,10 +55,12 @@ var Board = React.createClass({
         return;
       }
       num_black_chips++;
+      new_color = "white";
     }
-    chips.push({ color: this.state.color, x_coord: point[0], y_coord: point[1] });
+    chips.push({ color: this.state.color, point: point });
     this.setAvailableNetworks(chips);
     this.setState({chips: chips, 
+                   color: new_color,
                    num_black_chips: num_black_chips, 
                    num_white_chips: num_white_chips});
   },
@@ -64,17 +77,22 @@ var Board = React.createClass({
     var prev_chip = prev_square.children[0];
     var prev_point = prev_square.className.match(/\d\d/)[0];
     this.refs[prev_point].getDOMNode().className = "board_square " + prev_point;
-    var prev_x = prev_point[0];
     var prev_y = prev_point[1];
     var new_x = point[0];
     var new_y = point[1];
     var chips = this.state.chips;
+    var new_color;
+    if (this.state.color == "white") {
+      new_color = "black";
+    } else  {
+      new_color = "white";
+    }
     for (var k=0; k< chips.length; k++) {
       var chip = chips[k];
-      if (prev_x == chip.x_coord && prev_y == chip.y_coord) {
-        chip.x_coord = new_x;
-        chip.y_coord = new_y;
-        this.setState({chips: chips, pendingStepMove: false});
+      if (prev_point == chip.point) {
+        chip.point = point;
+        this.setAvailableNetworks(chips);
+        this.setState({chips: chips, color: new_color, pendingStepMove: false});
         return;
       }
     }
@@ -86,17 +104,14 @@ var Board = React.createClass({
       this.setState({pendingStepMove: false});
     }
   },
-  handleColorChange: function(event) {
-    this.setState({color: event.target.value});
-  },
-  getConnectedChips: function(x_coord, y_coord) {
+  getConnectedChips: function(point) {
     var connected_chips = [];
     for (var k=0; k<this.state.chips.length; k++) {
       var chip = this.state.chips[k];
-      var chip_x = parseInt(chip.x_coord);
-      var chip_y = parseInt(chip.y_coord);
-      var x = parseInt(x_coord);
-      var y = parseInt(y_coord);
+      var chip_x = parseInt(chip.point[0]);
+      var chip_y = parseInt(chip.point[1]);
+      var x = parseInt(point[0]);
+      var y = parseInt(point[1]);
       if (this.state.pendingStepMove) {
         var choosen_chip = document.getElementsByClassName("step_move")[0]; 
         var choosen_point = choosen_chip.className.match(/\d\d/)[0];
@@ -126,14 +141,19 @@ var Board = React.createClass({
       var row = [];
       var tr = React.DOM.tr;
       for (var i=0; i<8; i++) {
-        var inactive_square = false;
+        var active_square;
+        if (this.state.winner != "") {
+          inactive_square = true;
+        } else {
+          inactive_square = false;
+        }
         var color = "";
         if ((j == 0 || j == 7) && (i == 0 || i == 7)) {
           inactive_square = true;
         }
         for (var k=0; k<this.state.chips.length; k++) {
           var chip = this.state.chips[k];
-          if (chip.x_coord == i && chip.y_coord == j) {
+          if (chip.point[0] == i && chip.point[1] == j) {
             color = chip.color;
           }
         }
@@ -156,7 +176,11 @@ var Board = React.createClass({
     }
     return (
       <div>
-        <ControlForm  handleColorChange= {this.handleColorChange} />
+        <BoardHeader  
+          color = {this.state.color} 
+          networks={this.state.networks}
+          winner= {this.state.winner}
+        />
         <table className="board_table">
           {board_rows}
         </table>
@@ -165,12 +189,66 @@ var Board = React.createClass({
   }
 });
 
-var ControlForm = React.createClass({
+var BoardHeader = React.createClass({
   render: function() {
+    var networks = this.props.networks
+    var white_incomplete = networks["white"]["incomplete"];
+    var black_incomplete = networks["black"]["incomplete"];
+    var white_incomplete_display = "";
+    for (var i=0; i < white_incomplete.length; i++) {
+      var network = white_incomplete[i];
+      white_incomplete_display += "[ "
+      for (var m=0; m < network.length; m++) {
+        point = network[m];
+        white_incomplete_display += point + ", "
+      }
+      white_incomplete_display += "] ,"
+    }
+    var black_incomplete_display = "";
+    for (var i=0; i < black_incomplete.length; i++) {
+      var network = black_incomplete[i];
+      black_incomplete_display += "[ "
+      for (var m=0; m < network.length; m++) {
+        point = network[m];
+        black_incomplete_display += point + ", "
+      }
+      black_incomplete_display += "] ,"
+    }
+    var white_complete = networks["white"]["complete"];
+    var white_complete_display = "";
+    for (var i=0; i < white_complete.length; i++) {
+      var network = white_complete[i];
+      white_complete_display += "[ "
+      for (var m=0; m < network.length; m++) {
+        point = network[m];
+        white_complete_display += point + ", "
+      }
+      white_complete_display += "] ,"
+    }
+    var black_complete = networks["black"]["complete"];
+    var black_complete_display = "";
+    for (var i=0; i < black_complete.length; i++) {
+      var network = black_complete[i];
+      black_complete_display += "[ "
+      for (var m=0; m < network.length; m++) {
+        point = network[m];
+        black_complete_display += point + ", "
+      }
+      black_complete_display += "] ,"
+    }
+    var winner_display = this.props.winner;
+    if (winner_display != "") {
+      winner_display += " wins!";
+    }
     return ( 
-      <div onChange={this.props.handleColorChange}>
-        <input type="radio" name="color" value="black" defaultChecked >Black</input>
-        <input type="radio" name="color" value="white" >White</input>
+      <div className="board_header">
+        <h1 className="title">Network</h1>
+        <h1>{winner_display}</h1>
+        <h2 className="sub-title">{this.props.color}'s turn</h2>
+        <h2 className="white-networks">White incomplete: {white_incomplete_display}</h2>
+        <h2 className="black-networks">Black incomplete: {black_incomplete_display}</h2>
+        <h2 className="black-networks">White complete: {white_complete_display}</h2>
+        <h2 className="black-networks">Black complete: {black_complete_display}</h2>
       </div>
     );
   }
@@ -178,13 +256,13 @@ var ControlForm = React.createClass({
 
 var BoardSquare = React.createClass({
   onClick: function() {
-    if (this.props.pendingStepMove) {
+    if (this.props.pendingStepMove && !this.props.inactive) {
       if (this.props.chip == "" && this.notConnectedChip()) {
         this.props.onEmptySquareStepMove(this.props.coordinate);
       } else if (this.props.chip != "") {
         this.props.onSquareStepMove(this.props.coordinate);
       }
-    } else {
+    } else if (!this.props.inactive) {
        if (this.props.chip == "" && this.notConnectedChip()) {
         this.props.onEmptySquare(this.props.coordinate);
       } else if (this.props.chip != "") {
@@ -194,13 +272,13 @@ var BoardSquare = React.createClass({
   },
   notConnectedChip: function() {
     var point = this.props.coordinate;
-    var connected_chips = this.props.getConnectedChips(point[0], point[1]);
+    var connected_chips = this.props.getConnectedChips(point);
     if (connected_chips.length >= 2) {
       return false;
     }
     for (var k=0; k<connected_chips.length; k++) {
       var chip = connected_chips[k];
-      var second_connected_chips = this.props.getConnectedChips(chip.x_coord, chip.y_coord);
+      var second_connected_chips = this.props.getConnectedChips(chip.point);
       if (second_connected_chips.length > 0) {
         return false;
       }
@@ -237,9 +315,4 @@ var Chip = React.createClass({
   }
 });
 
-/* TODO url props isn't working */
-React.renderComponent(
-  <Board url="placeChip.json" />,
-  document.getElementById('board')
-);
 

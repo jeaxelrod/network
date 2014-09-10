@@ -6,11 +6,10 @@ class NetworkFinder
   def initialize(params)
     @black_chips = []
     @white_chips = []
-    @networks_found = false
     if params[:chips]
       chips = params[:chips]
       chips.each do |index, chip|
-        coord = (chip["coord"]).to_i
+        coord = (chip["point"]).to_i
         if chip["color"] == "black"
           @black_chips << coord 
         elsif chip["color"] == "white"
@@ -38,7 +37,7 @@ class NetworkFinder
         networks[:incomplete] += new_networks[:incomplete]
       end
     end
-    networks[:complete].sort! { |x, y| y.length <=> x.length }
+    networks[:complete].sort! { |x, y| x.length <=> y.length }
     networks[:incomplete].sort! { |x, y| y.length <=> x.length }
     networks
   end
@@ -56,7 +55,7 @@ class NetworkFinder
     end
 
     goal_chips.each do |chip|
-      chips = get_chips_connected_to_goal_chip(chip) 
+      chips = get_chips_connected_to_goal_chip(chip, own_chips, foreign_chips) 
       chips.each do |second_chip|
         networks << [chip, second_chip]
       end
@@ -64,7 +63,7 @@ class NetworkFinder
     networks
   end
 
-  def get_chips_connected_to_goal_chip(goal_chip)
+  def get_chips_connected_to_goal_chip(goal_chip, own_chips, foreign_chips)
     chips = [] 
     goals_with_actions= {
       :bottom => [-11, -1, 9],
@@ -72,16 +71,16 @@ class NetworkFinder
       :right => [9, -10, -9],
       :left => [9, 10, 11] }
     goal = get_goal_area(goal_chip)
-    action = goals_with_actions[goal]
-    action.each do |action|
+    actions = goals_with_actions[goal]
+    actions.each do |action|
       current_coord = goal_chip
       next_chip = nil
       while next_chip == nil
         current_coord += action
-        if in_goal_area?(current_coord) || @white_chips.include?(current_coord)
+        if in_goal_area?(current_coord) || foreign_chips.include?(current_coord)
           break
         end
-        if @black_chips.include? current_coord
+        if own_chips.include? current_coord
           next_chip = current_coord
           chips += [next_chip]
         end

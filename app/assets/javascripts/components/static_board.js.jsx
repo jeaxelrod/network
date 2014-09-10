@@ -10,7 +10,7 @@ var StaticBoard = React.createClass({
     };
   },
 
-  handleChipPlacement: function(point) {
+  handleStaticChipPlacement: function(point) {
     var chips = this.state.chips;
     var color = this.state.color;
     var num_white_chips = this.state.num_white_chips;
@@ -73,7 +73,7 @@ var StaticBoard = React.createClass({
   handleColorChange: function(event) {
     this.setState({color: event.target.value});
   },
-  getConnectedChips: function(x_cord, y_cord) {
+  getConnectedStaticChips: function(x_cord, y_cord) {
     var connected_chips = [];
     for (var k=0; k<this.state.chips.length; k++) {
       var chip = this.state.chips[k];
@@ -127,11 +127,11 @@ var StaticBoard = React.createClass({
                     key = {i.toString() + j}
                     chip = {color}
                     inactive = {inactive_square}
-                    onEmptySquare = {this.handleChipPlacement}
-                    onSquareWithChip = {this.startStepMove}
+                    onEmptySquare = {this.handleStaticChipPlacement}
+                    onSquareWithStaticChip = {this.startStepMove}
                     onEmptySquareStepMove = {this.finishStepMove}
                     onSquareStepMove = {this.cancelStepMove}
-                    getConnectedChips = {this.getConnectedChips}
+                    getConnectedStaticChips = {this.getConnectedStaticChips}
                     pendingStepMove = {this.state.pendingStepMove}
                   />);
       }
@@ -140,7 +140,7 @@ var StaticBoard = React.createClass({
     }
     return (
       <div>
-        <ControlForm  handleColorChange= {this.handleColorChange} />
+        <StaticControlForm  handleColorChange= {this.handleColorChange} />
         <table className="board_table">
           {board_rows}
         </table>
@@ -149,7 +149,7 @@ var StaticBoard = React.createClass({
   }
 });
 
-var ControlForm = React.createClass({
+var StaticControlForm = React.createClass({
   render: function() {
     return ( 
       <div onChange={this.props.handleColorChange}>
@@ -163,28 +163,28 @@ var ControlForm = React.createClass({
 var StaticBoardSquare = React.createClass({
   onClick: function() {
     if (this.props.pendingStepMove) {
-      if (this.props.chip == "" && this.notConnectedChip()) {
+      if (this.props.chip == "" && this.notConnectedStaticChip()) {
         this.props.onEmptySquareStepMove(this.props.coordinate);
       } else if (this.props.chip != "") {
         this.props.onSquareStepMove(this.props.coordinate);
       }
     } else {
-       if (this.props.chip == "" && this.notConnectedChip()) {
+       if (this.props.chip == "" && this.notConnectedStaticChip()) {
         this.props.onEmptySquare(this.props.coordinate);
       } else if (this.props.chip != "") {
-        this.props.onSquareWithChip(this.props.coordinate);
+        this.props.onSquareWithStaticChip(this.props.coordinate);
       }     
     }
   },
-  notConnectedChip: function() {
+  notConnectedStaticChip: function() {
     var point = this.props.coordinate;
-    var connected_chips = this.props.getConnectedChips(point[0], point[1]);
+    var connected_chips = this.props.getConnectedStaticChips(point[0], point[1]);
     if (connected_chips.length >= 2) {
       return false;
     }
     for (var k=0; k<connected_chips.length; k++) {
       var chip = connected_chips[k];
-      var second_connected_chips = this.props.getConnectedChips(chip.x_cord, chip.y_cord);
+      var second_connected_chips = this.props.getConnectedStaticChips(chip.x_cord, chip.y_cord);
       if (second_connected_chips.length > 0) {
         return false;
       }
@@ -200,9 +200,9 @@ var StaticBoardSquare = React.createClass({
     var chip;
     if (!this.props.inactive) {
       if (this.props.chip == "white") {
-        chip = <Chip color= "white" point={this.props.coordinate} />
+        chip = <StaticChip color= "white" point={this.props.coordinate} />
       } else if (this.props.chip == "black") {
-        chip = <Chip color="black" point={this.props.coordinate} />
+        chip = <StaticChip color="black" point={this.props.coordinate} />
       }
     }
     return (
@@ -213,7 +213,7 @@ var StaticBoardSquare = React.createClass({
   }
 });
 
-var Chip = React.createClass({
+var StaticChip = React.createClass({
   render: function() {
     return (
       <div className={this.props.color + " chip " + this.props.point} ></div>
@@ -221,7 +221,4 @@ var Chip = React.createClass({
   }
 });
 
-React.renderComponent(
-  <StaticBoard />,
-  document.getElementById('board')
-);
+
