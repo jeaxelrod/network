@@ -91,7 +91,7 @@ class NetworkController < ApplicationController
       until move_found
         moving_chip = chips[:black].sample
         point = total_black_moves.sample
-        new_chips = chips.dup
+        new_chips = chips.deep_dup
         new_chips[:black].delete(moving_chip)
         if valid_move(new_chips, point, :black)
           move_found = true

@@ -23,7 +23,6 @@ var Board = React.createClass({
         var networks = JSON.parse(data.networks);
         var chips = JSON.parse(data.chips);
         var winner = this.setWinner(networks);
-        console.log(data);
         this.setState({networks: networks, winner: winner, chips: chips, color: data.color});
       }.bind(this),
       error: function(xhr, status, err) {
@@ -73,16 +72,16 @@ var Board = React.createClass({
   finishStepMove: function(point) {
     var prev_square = document.getElementsByClassName("step_move")[0];
     var prev_chip = prev_square.children[0];
-    var prev_point = prev_square.className.match(/\d\d/)[0];
+    var prev_point = parseInt(prev_square.className.match(/\d\d/)[0]);
     this.refs[prev_point].getDOMNode().className = "board_square " + prev_point;
-    var prev_y = prev_point[1];
-    var new_x = point[0];
-    var new_y = point[1];
-    var chips = this.state.chips.this.state.color;
-    for (var k=0; k< chips.length; k++) {
-      var chip = chips[k];
-      if (prev_point == chip.point) {
-        chip.point = point;
+    var chips = this.state.chips;
+    var colored_chips = chips[this.state.color]
+    for (var k=0; k< colored_chips.length; k++) {
+      var chip = colored_chips[k];
+      if (prev_point == chip) {
+        colored_chips[k] = point;
+        console.log(colored_chips);
+        console.log(chips);
         this.setAvailableNetworks(chips);
         this.setState({chips: chips, pendingStepMove: false});
         return;
