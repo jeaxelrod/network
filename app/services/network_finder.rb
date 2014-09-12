@@ -6,20 +6,9 @@ class NetworkFinder
   def initialize(params)
     @black_chips = []
     @white_chips = []
-    if params[:chips]
-      chips = params[:chips]
-      chips.each do |index, chip|
-        coord = (chip["point"]).to_i
-        if chip["color"] == "black"
-          @black_chips << coord 
-        elsif chip["color"] == "white"
-          @white_chips << coord 
-        end
-      end
-    else
-      @black_chips = params[:black_chips] if params[:black_chips]
-      @white_chips = params[:white_chips] if params[:white_chips]
-    end
+    chips = params[:chips]
+    @black_chips = chips[:black] 
+    @white_chips = chips[:white] 
     @white = find_networks(:white)
     @black = find_networks(:black)
     @network = { :white => @white, :black => @black }

@@ -7,8 +7,13 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'network#index'
 
+  get "/local" => "network#local"
+  get "/online" => "network#online"
+  get "/computer" => "network#computer"
+
   get 'board' => 'board#show'
   match "/placeChip" => "network#placeChip", :via => :post
+  match "/getNetworks" => "network#getNetworks", :via => :post
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

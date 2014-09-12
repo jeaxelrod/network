@@ -2,10 +2,10 @@
 var Board = React.createClass({
   getInitialState: function() {
     return {
-      chips: [],
+      chips: {"white": [], "black": []},
       networks: {"white": {"incomplete": [], "complete": []} , 
                  "black": {"incomplete": [], "complete": []}},
-      color: 'white',
+      color: this.props.color,
       num_black_chips: 0,
       num_white_chips: 0,
       pendingStepMove: false,
@@ -13,14 +13,18 @@ var Board = React.createClass({
     };
   },
   setAvailableNetworks: function(chips) {
+    var data = {'id': this.props.id, 'chips': chips}
     $.ajax({
       url: "/placeChip.json",
       dataType: 'json',
       type: 'POST',
-      data: {"chips": chips},
+      data: data,
       success: function(data) {
-        var winner = this.setWinner(data);
-        this.setState({networks: data, winner: winner});
+        var networks = JSON.parse(data.networks);
+        var chips = JSON.parse(data.chips);
+        var winner = this.setWinner(networks);
+        console.log(data);
+        this.setState({networks: networks, winner: winner, chips: chips, color: data.color});
       }.bind(this),
       error: function(xhr, status, err) {
       }.bind(this)
@@ -39,28 +43,22 @@ var Board = React.createClass({
     var color = this.state.color;
     var num_white_chips = this.state.num_white_chips;
     var num_black_chips = this.state.num_black_chips;
-    var new_color;
     if (color == "white") {
-      var excluded_points = ["10", "20", "30", "40", "50", "60", 
-                             "17", "27", "37", "47", "57", "67"]
-      if (this.state.num_white_chips >= 10 || excluded_points.indexOf(point) > -1) {
+      var excluded_points = [10, 20, 30, 40, 50, 60, 17, 27, 37, 47, 57, 67]
+      if (num_white_chips >= 10 || excluded_points.indexOf(point) > -1) {
         return;
       }
       num_white_chips++;
-      new_color = "black";
     } else if (color == "black") {
-      var excluded_points = ["01", "02", "03", "04", "05", "06", 
-                             "71", "72", "73", "74", "75", "76"] 
-      if (this.state.num_black_chips >= 10 || excluded_points.indexOf(point) > -1) {
+      var excluded_points = [1, 2, 3, 4, 5, 6, 71, 72, 73, 74, 75, 76] 
+      if (num_black_chips >= 10 || excluded_points.indexOf(point) > -1) {
         return;
       }
       num_black_chips++;
-      new_color = "white";
     }
-    chips.push({ color: this.state.color, point: point });
+    chips[color].push(point);
     this.setAvailableNetworks(chips);
     this.setState({chips: chips, 
-                   color: new_color,
                    num_black_chips: num_black_chips, 
                    num_white_chips: num_white_chips});
   },
@@ -80,19 +78,13 @@ var Board = React.createClass({
     var prev_y = prev_point[1];
     var new_x = point[0];
     var new_y = point[1];
-    var chips = this.state.chips;
-    var new_color;
-    if (this.state.color == "white") {
-      new_color = "black";
-    } else  {
-      new_color = "white";
-    }
+    var chips = this.state.chips.this.state.color;
     for (var k=0; k< chips.length; k++) {
       var chip = chips[k];
       if (prev_point == chip.point) {
         chip.point = point;
         this.setAvailableNetworks(chips);
-        this.setState({chips: chips, color: new_color, pendingStepMove: false});
+        this.setState({chips: chips, pendingStepMove: false});
         return;
       }
     }
@@ -137,30 +129,30 @@ var Board = React.createClass({
   },
   render: function() {
     var board_rows = [];
+    var white = this.state.chips.white;
+    var black = this.state.chips.black;
     for (var j=0; j<8; j++) {
       var row = [];
       var tr = React.DOM.tr;
       for (var i=0; i<8; i++) {
+        var point = (i * 10) + j;
         var active_square;
-        if (this.state.winner != "") {
+        var color = "";
+        if (this.state.winner != "" ||
+           ((j == 0 || j == 7) && (i == 0 || i == 7))) {
           inactive_square = true;
         } else {
           inactive_square = false;
         }
-        var color = "";
-        if ((j == 0 || j == 7) && (i == 0 || i == 7)) {
-          inactive_square = true;
-        }
-        for (var k=0; k<this.state.chips.length; k++) {
-          var chip = this.state.chips[k];
-          if (chip.point[0] == i && chip.point[1] == j) {
-            color = chip.color;
-          }
-        }
+        if (white.indexOf(point) >= 0) {
+          color = "white";
+        } else if (black.indexOf(point) >= 0) {
+          color = "black";
+        } 
         row.push(<BoardSquare
-                    coordinate = {i.toString() + j}
-                    ref = {i.toString() + j}
-                    key = {i.toString() + j}
+                    coordinate = {point}
+                    ref = {point}
+                    key = {point}
                     chip = {color}
                     inactive = {inactive_square}
                     onEmptySquare = {this.handleChipPlacement}
