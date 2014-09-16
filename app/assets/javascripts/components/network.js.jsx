@@ -13,7 +13,7 @@ var Board = React.createClass({
     };
   },
   setAvailableNetworks: function(chips) {
-    var data = {'id': this.props.id, 'chips': chips}
+    var data = {'id': this.props.id, 'chips': chips, 'color': this.state.color}
     $.ajax({
       url: "/placeChip.json",
       dataType: 'json',
@@ -80,8 +80,6 @@ var Board = React.createClass({
       var chip = colored_chips[k];
       if (prev_point == chip) {
         colored_chips[k] = point;
-        console.log(colored_chips);
-        console.log(chips);
         this.setAvailableNetworks(chips);
         this.setState({chips: chips, pendingStepMove: false});
         return;
@@ -101,8 +99,6 @@ var Board = React.createClass({
     var chips = this.state.chips[color]
     var x = Math.floor(point/10);;
     var y =  point % 10;
-    console.log("Point", point);
-    console.log(x, y);
     for (var k=0; k< chips.length; k++) {
       var chip = chips[k];
       var chip_x = Math.floor(chip/10); 

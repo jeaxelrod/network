@@ -48,9 +48,10 @@ class NetworkController < ApplicationController
     @chips = format_chips(params[:chips])
     if game.game_type == "local"
       network_finder = NetworkFinder.new(:chips => @chips)
-      @data[:networks] = JSON.generate({:white => @network_finder.white, :black => @network_finder.black})
-      #TODO handle color change
+      @data[:networks] = JSON.generate({:white => network_finder.white, :black => network_finder.black})
+      @data[:color] = params[:color] == "white" ? "black" : "white"
       @game_id = game.id
+      @data[:chips] = JSON.generate(@chips)
     elsif game.game_type == "computer"
       @chips = random_computer_move(@chips)
       @data[:chips] = JSON.generate({:white => @chips[:white], :black => @chips[:black]})

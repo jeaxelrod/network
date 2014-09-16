@@ -7,8 +7,8 @@ class NetworkFinder
     @black_chips = []
     @white_chips = []
     chips = params[:chips]
-    @black_chips = chips[:black] 
-    @white_chips = chips[:white] 
+    @black_chips = chips[:black]  if chips[:black]
+    @white_chips = chips[:white]  if chips[:white]
     @white = find_networks(:white)
     @black = find_networks(:black)
     @network = { :white => @white, :black => @black }

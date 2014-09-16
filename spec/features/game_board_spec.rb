@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature "Board structure" do 
   scenario "User visits empty board", js: true do
-    visit root_path
+    visit local_path
 
     expect(page).to have_css "table"
     expect(page).to have_css "tr"
@@ -10,13 +10,13 @@ feature "Board structure" do
     expect(page.all("tr td.board_square").count).to eql(64) 
   end
   scenario "User adds a chip to the board", js: true do
-    visit root_path
+    visit local_path
     all('td.board_square')[10].click
 
     expect(page).to have_css "td div.chip"
   end
   scenario "User adds a chip to an existing chip", js: true do
-    visit root_path
+    visit local_path
     all('td.board_square')[10].click
     all('td.board_square')[10].click
 
@@ -24,7 +24,7 @@ feature "Board structure" do
     expect(page.all("div.chip").count).to eql(1)
   end
   scenario "Adding chip to two chips in a connected group", js: true do
-    visit root_path
+    visit local_path
     all('td.board_square')[10].click
     all('td.board_square')[1].click
     all('td.board_square')[11].click
@@ -34,7 +34,7 @@ feature "Board structure" do
     expect(page.all("div.chip").count).to eql(4) 
   end
   scenario "Adding chip to two chips in a connected group", js: true do
-    visit root_path
+    visit local_path
     all('td.board_square')[10].click
     all('td.board_square')[3].click
     all('td.board_square')[12].click
@@ -45,7 +45,7 @@ feature "Board structure" do
   end
   
   scenario "Performing a step move", js: true do
-    visit root_path
+    visit local_path
     all('td.board_square')[9].click
     all('td.board_square')[1].click
     all('td.board_square')[10].click
@@ -76,7 +76,7 @@ feature "Board structure" do
     within(page.all("td.board_square")[43]) { expect(page).to have_css "div.chip" }
   end
   scenario "Performing a step move on the wrong color", js: true do
-    visit root_path
+    visit local_path
     all('td.board_square')[9].click
     all('td.board_square')[1].click
     all('td.board_square')[10].click
@@ -104,7 +104,7 @@ feature "Board structure" do
     expect(page).to_not have_css ".step_move"
   end
   scenario "Cancelling a step move and then performing one", js: true do
-    visit root_path
+    visit local_path
     all('td.board_square')[9].click
     all('td.board_square')[1].click
     all('td.board_square')[10].click
