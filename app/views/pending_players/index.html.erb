@@ -1,0 +1,5 @@
+<ul>
+  <% @pending_players.each do |player| %>
+    <li>Player <%= player.id %> <%= link_to "Play" %></li>
+  <% end %>
+</ul>

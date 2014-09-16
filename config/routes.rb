@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+
+  resources :pending_players
   get 'static_pages/index'
 
   # The priority is based upon order of creation: first created -> highest priority.
@@ -14,6 +16,7 @@ Rails.application.routes.draw do
   get 'board' => 'board#show'
   match "/placeChip" => "network#placeChip", :via => :post
   match "/getNetworks" => "network#getNetworks", :via => :post
+  match "/player/create" => "network#createPlayer", :via => :post
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

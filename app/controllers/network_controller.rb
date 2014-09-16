@@ -14,6 +14,13 @@ class NetworkController < ApplicationController
     #Play with other players online
     #@game = Board.new(game_type: "multiplayer")
     #@game_id = @game.id
+    @pending_player = PendingPlayer.new
+  end
+  
+  def createPlayer 
+  end
+  
+  def multiplayer
   end
 
   def computer

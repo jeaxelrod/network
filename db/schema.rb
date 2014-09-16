@@ -11,12 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140910202936) do
+ActiveRecord::Schema.define(version: 20140916212302) do
 
   create_table "boards", force: true do |t|
     t.text     "white"
     t.text     "black"
     t.string   "game_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "pending_players", force: true do |t|
+    t.string   "username"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
