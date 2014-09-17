@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   match "/placeChip" => "network#placeChip", :via => :post
   match "/getNetworks" => "network#getNetworks", :via => :post
   match "/player/create" => "network#createPlayer", :via => :post
+  match "/startgame" => "network#startGame", :via => :post
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

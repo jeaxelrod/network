@@ -1,5 +1,3 @@
-<ul>
-  <% @pending_players.each do |player| %>
-    <li>Player <%= player.id %> <%= link_to "Play" %></li>
-  <% end %>
-</ul>
+<%= react_component('PlayerList', players: @pending_ids, this_player: @pending_player.id) %>
+<div id="board">
+</div>
