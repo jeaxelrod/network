@@ -41,16 +41,6 @@ class NetworkController < ApplicationController
       end
     end
   end
-  
-  def startGame
-    other_player = PendingPlayer.find(params[:other_id]) 
-    this_player = PendingPlayer.find(params[:this_id])
-    respond_to do |format|
-      format.json do
-        render json: 1
-      end
-    end
-  end
 
   def placeChip
     begin

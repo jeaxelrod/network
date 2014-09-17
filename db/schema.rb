@@ -22,7 +22,8 @@ ActiveRecord::Schema.define(version: 20140916212302) do
   end
 
   create_table "pending_players", force: true do |t|
-    t.boolean  "game_played", default: false
+    t.boolean  "game_requested", default: false
+    t.integer  "game_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
