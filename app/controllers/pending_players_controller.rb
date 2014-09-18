@@ -58,6 +58,7 @@ class PendingPlayersController < ApplicationController
   end
 
   def index
+    session[:id] = nil
     @pending_player = PendingPlayer.create
     session[:id] = @pending_player.id
     PendingPlayer.where.not(updated_at: (Time.now - 30)..Time.now).each do |player|

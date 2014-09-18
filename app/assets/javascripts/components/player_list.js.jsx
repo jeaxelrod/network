@@ -12,13 +12,16 @@ var PlayerList = React.createClass({
     setInterval(this.updatePlayers, 8000);
   },
   pollServer: function() {
+    console.log("pollSever");
     $.ajax({
       url: "/pending_player/update.json",
       dataType: 'json',
       type: 'POST',
       data: {"id": this.props.this_player},
       success: function(data) {
+        console.log("success");
         if ( data != null && data.game_id != null) {
+          console.log("component_rendered");
           var other_player = data.other_id
           this.setState({game_requested: true});
           React.renderComponent(
@@ -47,6 +50,7 @@ var PlayerList = React.createClass({
     });
   },
   clickPlayer: function(event) {
+    console.log(event);
     event.preventDefault()
     $.ajax({
       url: "/pending_player/request_game.json", 
