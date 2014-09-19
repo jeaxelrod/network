@@ -9,7 +9,6 @@ RSpec.describe "pending_players/index.html.erb", :type=> :view, js: true do
   end
   it "should display the other player" do
     render
-    binding.pry
     expect(rendered).to have_content("Play")
     expect(rendered).to have_content("Player")
   end
