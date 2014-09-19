@@ -1,18 +1,17 @@
 var ReactTestUtils;
 describe('PlayerList', function() {
-  var container = document.createElement("div");
   var board_div = document.createElement("div");
-  board_div.id = "board"
-  container.appendChild(board_div);
-  var TestUtils, player_list, instance;
 
   beforeEach(function() {
     TestUtils = React.addons.TestUtils;
     player_list = PlayerList({players:[1,2], this_player: 3});
-    instance = TestUtils.renderIntoDocument(player_list, container);
+    container = document.createElement("div");
+    container.id = "player_list"
+    instance = React.renderComponent(player_list, container);
   });
 
   it("Displays the players properly", function() {
+    spyOn(instance, "componentDidMount");
     var list = TestUtils.scryRenderedDOMComponentsWithTag(instance, "li");
     expect(list[0].getDOMNode().textContent).toMatch(/Player 1/);
     expect(list[1].getDOMNode().textContent).toMatch(/Player 2/);
@@ -30,6 +29,7 @@ describe('PlayerList', function() {
       options.success();
     });
     spyOn(React, "renderComponent");
+    spyOn(instance, "componentDidMount");
     instance.pollServer();
     expect($.ajax.calls.mostRecent().args[0].url).toEqual("/pending_player/update.json");
     expect(React.renderComponent).not.toHaveBeenCalled();
@@ -40,6 +40,7 @@ describe('PlayerList', function() {
     spyOn($, "ajax").and.callFake(function(options) {
       options.success({game_id: 1});
     });
+    spyOn(instance, "componentDidMount");
     spyOn(React, "renderComponent");
     instance.pollServer();
     expect($.ajax.calls.mostRecent().args[0].url).toEqual("/pending_player/update.json");
@@ -51,6 +52,7 @@ describe('PlayerList', function() {
     spyOn($, "ajax").and.callFake(function(options) {
       options.success({players: [1,2, 4]});
     });
+    spyOn(instance, "componentDidMount");
 
     instance.updatePlayers();
 
@@ -64,11 +66,12 @@ describe('PlayerList', function() {
     spyOn($, "ajax").and.callFake(function(options) {
       options.success({game_id: 1});
     });
+    spyOn(instance, "componentDidMount");
     spyOn(React, "renderComponent");
     
     var play = TestUtils.scryRenderedDOMComponentsWithTag(instance, "a");
     TestUtils.Simulate.click(play[0].getDOMNode());
-
+    
     expect($.ajax.calls.mostRecent().args[0].url).toEqual("/pending_player/request_game.json");
     expect(React.renderComponent).toHaveBeenCalled();
     expect(instance.state.game_requested).toBe(true);
