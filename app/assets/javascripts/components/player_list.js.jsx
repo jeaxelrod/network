@@ -4,12 +4,10 @@ var PlayerList = React.createClass({
     return {
       players: this.props.players,
       this_player: this.props.this_player,
-      game_requested: false
+      game_requested: false,
+      poll_timer_id: setInterval(this.pollServer, 1000),
+      update_timer_id: setInterval(this.updatePlayers, 8000) 
     };
-  },
-  componentDidMount: function() {
-    setInterval(this.pollServer, 1000);
-    setInterval(this.updatePlayers, 8000);
   },
   pollServer: function() {
     $.ajax({
@@ -21,8 +19,10 @@ var PlayerList = React.createClass({
         if ( data != null && data.game_id != null) {
           var other_player = data.other_id
           this.setState({game_requested: true});
+          clearInterval(this.state.poll_timer_id);
+          clearInterval(this.state.update_timer_id);
           React.renderComponent(
-            <Board type="online" id={data.game_id} color="black" />,
+            <Board type="online" id={data.game_id} player="black" />,
             document.getElementById("board")
           );
         }
@@ -58,7 +58,7 @@ var PlayerList = React.createClass({
       success: function(data) {
         this.setState({game_requested: true});
         React.renderComponent(
-          <Board type="online" id={data.game_id} color="white" />,
+          <Board type="online" id={data.game_id} player="white" />,
           document.getElementById("board")
         );
       }.bind(this),

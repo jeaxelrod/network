@@ -42,13 +42,14 @@ gem 'sprockets-rails', '2.1.3'
 gem 'react-rails', '~> 1.0.0.pre', github: 'reactjs/react-rails'
 gem 'therubyracer', :platforms => :ruby
 gem 'therubyrhino', :platforms => :jruby
-gem 'jasmine', group: [:test, :development]
-group :development do
+group :development, :test do
   gem "better_errors"
   gem "binding_of_caller"
   gem 'rspec-rails', '~> 3.0.0'
   gem "capybara"
   gem "selenium-webdriver"
   gem "pry"
+  gem 'jasmine'
+  gem 'database_cleaner'
 end
 

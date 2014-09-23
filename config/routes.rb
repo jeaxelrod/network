@@ -14,6 +14,8 @@ Rails.application.routes.draw do
   get "/computer" => "network#computer"
 
   get 'board' => 'board#show'
+  post "/network/update" => "network#update"
+
   match "/placeChip" => "network#placeChip", :via => :post
   match "/getNetworks" => "network#getNetworks", :via => :post
   match "/player/create" => "network#createPlayer", :via => :post

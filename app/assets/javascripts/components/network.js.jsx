@@ -5,24 +5,32 @@ var Board = React.createClass({
       chips: {"white": [], "black": []},
       networks: {"white": {"incomplete": [], "complete": []} , 
                  "black": {"incomplete": [], "complete": []}},
-      color: this.props.color,
+      player: this.props.player, //Color of player 
+      turn: "white", //color of current turn
       pendingStepMove: null,
       stepMoveTime: false,
       winner: ""
     };
   },
+  componentDidMount: function() {
+    if (this.props.type == "online") {
+      setInterval(this.updateGame, 3000);
+    }
+  },
   boardClick: function(point) {
     var current_square = this.refs[point];
-    if (current_square.props.type != "inactive") {
-      if (this.state.stepMoveTime) {
-        if (this.state.pendingStepMove) {
-          this.finishStepMove(point);
+    if (this.props.type != "online" || this.state.turn == this.state.player) {
+      if (current_square.props.type != "inactive") {
+        if (this.state.stepMoveTime) {
+          if (this.state.pendingStepMove) {
+            this.finishStepMove(point);
+          } else {
+            this.startStepMove(point);
+          }
         } else {
-          this.startStepMove(point);
-        }
-      } else {
-        if (this.validMove(point)) {
-          this.addChip(point);
+          if (this.validMove(point)) {
+            this.addChip(point);
+          }
         }
       }
     }
@@ -30,7 +38,7 @@ var Board = React.createClass({
   addChip: function(point) {
     var chips = this.state.chips;
     var stepMoveTime = false;
-    chips[this.state.color].push(point);
+    chips[this.state.turn].push(point);
     if (chips.black.length >= 10) {
       var stepMoveTime = true;
     }
@@ -42,12 +50,12 @@ var Board = React.createClass({
     var num_white_chips = this.state.num_chips_chips;
     var num_black_chips = this.state.num_black_chips;
     if (current_square.props.type == "") {
-      if (this.state.color == "white") {
+      if (this.state.turn == "white") {
         var excluded_points = [10, 20, 30, 40, 50, 60, 17, 27, 37, 47, 57, 67];
         if (excluded_points.indexOf(point) > -1) {
           return false;
         }
-      } else if (this.state.color == "black") {
+      } else if (this.state.turn == "black") {
         var excluded_points = [1, 2, 3, 4, 5, 6, 71, 73, 74, 75, 76];
         if (excluded_points.indexOf(point) > -1) {
           return false;
@@ -68,8 +76,8 @@ var Board = React.createClass({
   },
   getConnectedChips: function(point) {
     var connected_chips = [];
-    var color = this.state.color;
-    var chips = this.state.chips[color]
+    var turn = this.state.turn;
+    var chips = this.state.chips[turn]
     var x = Math.floor(point/10);;
     var y =  point % 10;
     for (var k=0; k< chips.length; k++) {
@@ -77,13 +85,7 @@ var Board = React.createClass({
       var chip_x = Math.floor(chip/10); 
       var chip_y = chip % 10; 
       if (this.state.pendingStepMove) {
-        var choosen_chip;
-        if (this.state.color == "white") {
-          choosen_chip = document.getElementsByClassName("pending_white")[0]; 
-        } else {
-          choosen_chip = document.getElementsByClassName("pending_black")[0]; 
-        }
-        var choosen_point = choosen_chip.className.match(/(\d\d|\d)/)[0];
+        var choosen_point = this.state.pendingStepMove; 
         if (choosen_point == chip) {
           continue;
         }
@@ -103,24 +105,17 @@ var Board = React.createClass({
     return connected_chips;
   },
   startStepMove: function(point) {
-    var chip = document.getElementsByClassName(point + " chip")[0];
-    if ( chip &&
-        ((this.state.color == "black" && chip.className.contains("black")) ||
-        (this.state.color == "white" &&  chip.className.contains("white")))) {
+    var square = this.refs[point];
+    if ( square &&
+        ((this.state.turn == "black" && square.props.type.contains("black")) ||
+        (this.state.turn == "white" &&  square.props.type.contains("white")))) {
       this.setState({pendingStepMove: point});
     }
   },
   finishStepMove: function(point) {
-    var prev_square;
-    if (this.state.color == "white") {
-      prev_square = document.getElementsByClassName("pending_white")[0];
-    } else {
-      prev_square = document.getElementsByClassName("pending_black")[0];
-    }
-    var prev_point = parseInt(prev_square.className.match(/(\d\d|\d)/)[0]);
-    console.log(prev_point);
+    var prev_point = this.state.pendingStepMove; 
     var chips = this.state.chips;
-    var colored_chips = chips[this.state.color]
+    var colored_chips = chips[this.state.turn]
     if (prev_point == point) {
       //Cancel step move
       this.setState({pendingStepMove: null});
@@ -140,33 +135,56 @@ var Board = React.createClass({
     }
   },
   setAvailableNetworks: function(chips) {
-    var data = {'id': this.props.id, 'chips': chips, 'color': this.state.color}
+    var data = {'id': this.props.id, 'chips': chips, 'color': this.state.turn}
     $.ajax({
       url: "/placeChip.json",
       dataType: 'json',
       type: 'POST',
       data: data,
       success: function(data) {
-        var networks = JSON.parse(data.networks);
-        var chips = JSON.parse(data.chips);
+        var networks = data.networks;
+        var chips = data.chips;
         var winner = this.setWinner(networks);
         var stepMoveTime = false;
-        if (chips.black.length >= 10) {
+        if (chips.black && chips.black.length >= 10) {
           stepMoveTime = true;
         }
-        this.setState({networks: networks, winner: winner, chips: chips, color: data.color, stepMoveTime: stepMoveTime});
+        this.setState({networks: networks, winner: winner, chips: chips, turn: data.color, stepMoveTime: stepMoveTime});
       }.bind(this),
       error: function(xhr, status, err) {
       }.bind(this)
     });
   },
+  updateGame: function() {
+    var chips = this.state.chips;
+    $.ajax({
+      url: "/network/update.json",
+      dataType: 'json',
+      type: 'POST',
+      data: {'id': this.props.id },
+      success: function(data) {
+        var updated_chips = data.chips;
+        if (updated_chips.black && updated_chips.white &&
+            (updated_chips.black.length > chips.black.length || 
+             updated_chips.white.length > chips.white.length)) {
+          var turn = this.state.turn == "white" ? "black" : "white";
+          this.setState({chips: updated_chips, turn: turn});
+        }
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error("/network/update.json", status, err.toString());
+      }
+    });
+  },
   setWinner: function(networks) {
-    if (networks["white"]["complete"].length > 0) {
-      return "white";
-    } else if (networks["black"]["complete"].length > 0) {
-      return "black";
+    if (networks && networks["white"] && networks["black"]) {
+      if (networks["white"]["complete"].length > 0) {
+        return "white";
+      } else if (networks["black"]["complete"].length > 0) {
+        return "black";
+      }
+      return "";
     }
-    return "";
   },
   render: function() {
     var board_rows = [];
@@ -203,7 +221,7 @@ var Board = React.createClass({
     return (
       <div>
         <BoardHeader  
-          color = {this.state.color} 
+          color = {this.state.turn} 
           networks={this.state.networks}
           winner= {this.state.winner}
         />

@@ -42,6 +42,23 @@ class NetworkController < ApplicationController
     end
   end
 
+  def update
+    begin
+      game = Board.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      flash[:notice] = "Sorry we lost your game"
+      #TODO Redirect isn't working
+      render :js => "window.location.pathname='#{root_path.to_json}'"
+      return
+    end
+    @data = JSON.generate({chips: {white: game.white, black: game.black}})
+    respond_to do |format|
+      format.json do
+        render json: @data
+      end
+    end
+  end
+
   def placeChip
     begin
       game = Board.find(params[:id])
@@ -55,17 +72,21 @@ class NetworkController < ApplicationController
     @chips = format_chips(params[:chips])
     if game.game_type == "local"
       network_finder = NetworkFinder.new(:chips => @chips)
-      @data[:networks] = JSON.generate({:white => network_finder.white, :black => network_finder.black})
+      @data[:networks] = {:white => network_finder.white, :black => network_finder.black}
       @data[:color] = params[:color] == "white" ? "black" : "white"
       @game_id = game.id
-      @data[:chips] = JSON.generate(@chips)
+      @data[:chips] = @chips
     elsif game.game_type == "computer"
       @chips = random_computer_move(@chips)
-      @data[:chips] = JSON.generate({:white => @chips[:white], :black => @chips[:black]})
+      @data[:chips] = {:white => @chips[:white], :black => @chips[:black]}
       network_finder = NetworkFinder.new(:chips => @chips)
-      @data[:networks] = JSON.generate({:white => network_finder.white, :black => network_finder.black})
+      @data[:networks] = {:white => network_finder.white, :black => network_finder.black}
       @data[:color] = "white";
     elsif game.game_type == "multiplayer"
+      @data[:color] = params[:color] == "white" ? "black" : "white"
+      @data[:chips] = {:white => @chips[:white], :black => @chips[:black]}
+      network_finder = NetworkFinder.new(:chips => @chips)
+      @data[:networks] = {:white => network_finder.white, :black => network_finder.black}
     end
     
     game.white = @chips[:white]
