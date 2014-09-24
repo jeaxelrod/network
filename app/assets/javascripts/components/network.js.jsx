@@ -106,9 +106,10 @@ var Board = React.createClass({
   },
   startStepMove: function(point) {
     var square = this.refs[point];
+    console.log(square.props.type);
     if ( square &&
-        ((this.state.turn == "black" && square.props.type.contains("black")) ||
-        (this.state.turn == "white" &&  square.props.type.contains("white")))) {
+        (this.state.turn == "black" && square.props.type.match(/black/) ||
+         this.state.turn == "white" &&  square.props.type.match(/white/))) {
       this.setState({pendingStepMove: point});
     }
   },
@@ -164,11 +165,14 @@ var Board = React.createClass({
       data: {'id': this.props.id },
       success: function(data) {
         var updated_chips = data.chips;
-        if (updated_chips.black && updated_chips.white &&
-            (updated_chips.black.length > chips.black.length || 
-             updated_chips.white.length > chips.white.length)) {
+        if (!updated_chips.black.equals(this.state.chips.black) || 
+            !updated_chips.white.equals(this.state.chips.white)) {
           var turn = this.state.turn == "white" ? "black" : "white";
-          this.setState({chips: updated_chips, turn: turn});
+          var stepMoveTime = false;
+          if (updated_chips.black.length >= 10) {
+            stepMoveTime = true;
+          }
+          this.setState({chips: updated_chips, turn: turn, stepMoveTime: stepMoveTime});
         }
       }.bind(this),
       error: function(xhr, status, err) {

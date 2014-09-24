@@ -9,9 +9,12 @@ describe('PlayerList', function() {
     container.id = "player_list"
     instance = React.renderComponent(player_list, container);
   });
+  afterEach(function() {
+    window.clearInterval(instance.state.poll_timer_id);
+    window.clearInterval(instance.state.update_timer_id);
+  });
 
   it("Displays the players properly", function() {
-    spyOn(instance, "componentDidMount");
     var list = TestUtils.scryRenderedDOMComponentsWithTag(instance, "li");
     expect(list[0].getDOMNode().textContent).toMatch(/Player 1/);
     expect(list[1].getDOMNode().textContent).toMatch(/Player 2/);
@@ -29,7 +32,6 @@ describe('PlayerList', function() {
       options.success();
     });
     spyOn(React, "renderComponent");
-    spyOn(instance, "componentDidMount");
     instance.pollServer();
     expect($.ajax.calls.mostRecent().args[0].url).toEqual("/pending_player/update.json");
     expect(React.renderComponent).not.toHaveBeenCalled();
@@ -40,7 +42,6 @@ describe('PlayerList', function() {
     spyOn($, "ajax").and.callFake(function(options) {
       options.success({game_id: 1});
     });
-    spyOn(instance, "componentDidMount");
     spyOn(React, "renderComponent");
     instance.pollServer();
     expect($.ajax.calls.mostRecent().args[0].url).toEqual("/pending_player/update.json");
@@ -52,7 +53,6 @@ describe('PlayerList', function() {
     spyOn($, "ajax").and.callFake(function(options) {
       options.success({players: [1,2, 4]});
     });
-    spyOn(instance, "componentDidMount");
 
     instance.updatePlayers();
 
@@ -66,7 +66,6 @@ describe('PlayerList', function() {
     spyOn($, "ajax").and.callFake(function(options) {
       options.success({game_id: 1});
     });
-    spyOn(instance, "componentDidMount");
     spyOn(React, "renderComponent");
     
     var play = TestUtils.scryRenderedDOMComponentsWithTag(instance, "a");
