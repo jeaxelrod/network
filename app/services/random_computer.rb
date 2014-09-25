@@ -18,12 +18,12 @@ class RandomComputer
                  71, 72, 73, 74, 75, 76]
 
   def initialize(params)
-    @chips = params[:chips]
+    @chips = params[:chips] || {black: [], white: []}
     @black = @chips[:black] || []
     @white = @chips[:white] || []
   end
 
-  def random_move(color)
+  def move(color)
     if @black.length >= 10
       choose_step_move(color)
     else 
@@ -87,7 +87,7 @@ class RandomComputer
       return true
     when 1
       second_connected_chips = connected_chips(colored_chips, connected_chips[0])
-      return second_connected_chips.length > 0 
+      return second_connected_chips.length == 0 
     else
       return false
     end
@@ -110,3 +110,4 @@ class RandomComputer
     return connected_chips 
   end
 end
+ComputerPlayer.new({chips: {black: [20, 60, 42, 13, 33, 25, 35, 55, 65, 75], white: []}})
