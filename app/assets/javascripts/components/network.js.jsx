@@ -164,15 +164,18 @@ var Board = React.createClass({
       type: 'POST',
       data: {'id': this.props.id },
       success: function(data) {
+        console.log(data.networks);
         var updated_chips = data.chips;
         if (!updated_chips.black.equals(this.state.chips.black) || 
             !updated_chips.white.equals(this.state.chips.white)) {
           var turn = this.state.turn == "white" ? "black" : "white";
+          var networks = data.networks;
+          var winner = this.setWinner(networks);
           var stepMoveTime = false;
           if (updated_chips.black.length >= 10) {
             stepMoveTime = true;
           }
-          this.setState({chips: updated_chips, turn: turn, stepMoveTime: stepMoveTime});
+          this.setState({chips: updated_chips, networks: networks, turn: turn, stepMoveTime: stepMoveTime, winner: winner});
         }
       }.bind(this),
       error: function(xhr, status, err) {

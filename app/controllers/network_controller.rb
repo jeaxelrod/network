@@ -50,7 +50,11 @@ class NetworkController < ApplicationController
       render :js => "window.location.pathname='#{root_path.to_json}'"
       return
     end
-    @data = JSON.generate({chips: {white: game.white, black: game.black}})
+    chips = {white: game.white, black: game.black}
+    network_finder = NetworkFinder.new(:chips => chips)
+    @data = {}
+    @data[:chips] = {white: game.white, black: game.black}
+    @data[:networks] = {white: network_finder.white, black: network_finder.black}
     respond_to do |format|
       format.json do
         render json: @data
