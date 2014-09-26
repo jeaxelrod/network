@@ -1,7 +1,7 @@
 class Game
   attr :chips, :black, :white, :winner
 
-  def initialize(player1, player2)
+  def initialize(player1 = RandomComputer.new, player2 = RandomComputer.new)
     @player1 = player1
     @player2 = player2
     @chips = {white: [], black: []}
