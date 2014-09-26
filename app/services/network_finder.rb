@@ -4,9 +4,9 @@ class NetworkFinder
   WHITE_GOAL_AREAS = [1, 2, 3, 4, 5, 6, 71, 72, 73, 74, 75, 76]
 
   def initialize(params)
-    chips = params[:chips]
-    @black_chips = chips[:black] || [] 
-    @white_chips = chips[:white] || [] 
+    chips = params[:chips] || {white: [], black: []}
+    @black_chips = chips[:black] 
+    @white_chips = chips[:white]
     @white = find_networks(:white)
     @black = find_networks(:black)
     @network = { :white => @white, :black => @black }

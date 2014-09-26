@@ -1,5 +1,5 @@
 class RandomComputer
-  attr_reader :chips 
+  attr_accessor :chips
   BLACK_MOVES = [10, 20, 30, 40, 50, 60, 
                  11, 21, 31, 41, 51, 61, 
                  12, 22, 32, 42, 52, 62,
@@ -17,47 +17,45 @@ class RandomComputer
                  61, 62, 63, 64, 65, 66,
                  71, 72, 73, 74, 75, 76]
 
-  def initialize(params)
+  def initialize(params = {})
     @chips = params[:chips] || {black: [], white: []}
-    @black = @chips[:black] || []
-    @white = @chips[:white] || []
   end
 
   def move(color)
-    if @black.length >= 10
+    if @chips[:black].length >= 10
       choose_step_move(color)
     else 
       choose_move(color)
     end
-    return
   end
-  
+
   private
 
   def choose_move(color)
-    move_found = false
-    until move_found
+    move = Move.new(color)
+    until move.added_chip
       point = random_point(color)
       if valid_move?(@chips, point, color)
-        move_found = true 
+        move.added_chip = point
       end
     end
-    @chips[color] << point
+    move
   end
 
   def choose_step_move(color)
-    move_found = false
-    until move_found 
+    move = Move.new(color)
+    until move.added_chip
       moving_point = pending_step_point(color) 
       point = random_point(color)
       new_chips = @chips.deep_dup
       new_chips[color].delete(moving_point)
       if valid_move?(new_chips, point, :black) && point != moving_point
-        move_found = true
+        move.added_chip = point
+        move.deleted_chip = moving_point
         new_chips[color] << point
       end
     end
-    @chips = new_chips
+    move
   end
 
 

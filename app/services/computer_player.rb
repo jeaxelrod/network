@@ -1,5 +1,5 @@
 class ComputerPlayer
-  attr_reader :chips, :black, :white
+  attr_accessor :chips, :black, :white
   BLACK_MOVES = [10, 20, 30, 40, 50, 60, 
                  11, 21, 31, 41, 51, 61, 
                  12, 22, 32, 42, 52, 62,
