@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20140916212302) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "boards", force: true do |t|
     t.text     "white"
     t.text     "black"
