@@ -17,37 +17,37 @@ class ComputerPlayer
                  61, 62, 63, 64, 65, 66,
                  71, 72, 73, 74, 75, 76]
 
-  def initialize(params)
+  def initialize(params = {})
     @chips = params[:chips] || {black: [], white: []}
-    @search_depth = params[:search_depth] || 5 #TODO Tinker with default
+    @search_depth = params[:search_depth] || 2 #TODO Tinker with default
     @color = params[:color] || :black
   end
 
   def move(color)
-    if @chips[:black].length >= 10
-      choose_step_move(color)
-    else
-      choose_move(color, -1, 1)
-    end
+    choose_move(color, -1, 1)
   end
   
   private
   
   def choose_move(color, alpha, beta, depth = @search_depth)
     my_move = Move.new(color)
-    if (depth == 0) || has_winner?(chips)
+    if (depth == 0) || has_winner?
       my_move.score = evaluate_board()
       return my_move
     end 
+    legal_moves = all_legal_moves(color)
+    my_move = legal_moves.sample
+    if color == :white
+      other_color = :black
+    else
+      other_color = :white
+    end
     if color == @color
       #Computer's move;
       my_move.score = alpha
     else 
       my_move.score = beta
     end
-    legal_moves = all_legal_moves(color)
-    my_move = legal_moves.sample
-
     legal_moves.each do |move|
       @chips[color] << move.added_chip
       @chips[color].delete(move.deleted_chip) if move.deleted_chip
@@ -58,7 +58,7 @@ class ComputerPlayer
         my_move = move
         my_move.score = reply.score
         alpha = reply.score
-      elsif color == other_color && replay.score > my_move.score
+      elsif color == other_color && replay.score < my_move.score
         my_move = move
         my_move.score = reply.score
         beta = reply.score
@@ -69,14 +69,107 @@ class ComputerPlayer
     end
     return my_move
   end
-
+  
+  def has_winner?
+    network_finder = NetworkFinder.new(chips: @chips)
+    return :white if network_finder.white[:complete].any?
+    return :black if network_finder.black[:complete].any?
+    return nil
+  end
   def evaluate_board
+    puts @chips
+    network_finder = NetworkFinder.new(chips: @chips)
+    if network_finder.white[:complete].any?
+      puts -1
+      return -1
+    elsif network_finder.black[:complete].any?
+      puts 1
+      return 1
+    else
+      num_non_goal_black_pairs = num_non_goal_pairs(:black)
+      num_non_goal_white_pairs = num_non_goal_pairs(:white) 
+      num_from_goal_black_pairs = num_pairs_from_goal(:black)
+      num_from_goal_white_pairs = num_pairs_from_goal(:white)
+      black_points = num_from_goal_black_pairs * 2 + num_non_goal_black_pairs
+      white_points = num_from_goal_white_pairs * 2 + num_non_goal_white_pairs
+      puts white_points
+      puts black_points
+      score = black_points/20.0 - white_points/20.0
+      puts score
+      return score
+    end
   end
 
+  def num_non_goal_pairs(color)
+    directions = [-11, -1, 9, -10, 10, -9, 1, 11]
+    num_of_pairs = 0
+    if color == :black
+      foreign_chips = @chips[:white]
+      own_chips = @chips[:black]
+    elsif color == :white
+      foreign_chips = @chips[:black]
+      own_chips = @chips[:white]
+    end
+    own_chips.each do |chip|
+      if non_goal_area?(chip)
+        directions.each do |action|
+          curr_chip = chip
+          next_chip = nil
+          curr_chip += action
+          while next_chip == nil && non_goal_area?(curr_chip) 
+            if own_chips.include?(curr_chip)
+              next_chip = curr_chip
+              num_of_pairs+=1
+            elsif foreign_chips.include?(curr_chip)
+              next_chip = curr_chip
+            end
+            curr_chip += action
+          end
+        end
+      end
+    end
+    return num_of_pairs/2
+  end
+
+  def num_pairs_from_goal(color)
+    directions = [-11, -1, 9, -10, 10, -9, 1, 11]
+    num_pairs = 0
+    if color == :black
+      foreign_chips = @chips[:white]
+      own_chips = @chips[:black]
+      goal_chips = own_chips.select { |n| n % 10 == 0 || n % 10 == 7}
+    elsif color == :white
+      foreign_chips = @chips[:white]
+      own_chips = @chips[:black]
+      goal_chips = own_chips.select { |n| n / 10 == 0 || n / 10 == 7}
+    end
+    goal_chips.each do |chip|
+      directions.each do |action|
+        curr_chip = chip
+        next_chip = nil
+        curr_chip += action
+        while next_chip == nil && non_goal_area?(curr_chip)
+          if own_chips.include?(curr_chip)
+            next_chip = curr_chip
+            num_pairs += 1
+          elsif foreign_chips.include?(curr_chip)
+            next_chip = curr_chip
+          end
+          curr_chip += action
+        end
+      end
+    end
+    return num_pairs
+  end
+
+  def non_goal_area?(point)
+    return point % 10 > 0 && point % 10 < 7 && point / 10 > 0 && point / 10 < 70
+  end
+  
   def all_legal_moves(color) 
     legal_moves = []
     if @chips[:black].length >= 10
-      0..9.each do |n|
+      (0..9).each do |n|
         deleted_point = @chips[color].delete_at(n)
         legal_points = get_legal_points(color)
         legal_points.each do |point|
@@ -90,7 +183,7 @@ class ComputerPlayer
         legal_moves.push(Move.new(color, point))
       end
     end
-    return legal_moves
+    return legal_moves.shuffle
   end
 
   def get_legal_points(color)
