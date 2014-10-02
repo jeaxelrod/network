@@ -52,4 +52,5 @@ group :development, :test do
   gem 'jasmine'
   gem 'database_cleaner'
 end
+ruby "2.1.1"
 
