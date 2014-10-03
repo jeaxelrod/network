@@ -1,21 +1,39 @@
-.board_table 
-  border: 1px solid black
-  td
-    border: 1px solid black
-    height: 50px
-    width: 50px
-    &:hover
-      background-color: lightgray
-    .chip
-      height: 45px
-      width: 45px
-      border-radius: 999px
-      border: 1px solid black
-      margin: 0 auto
-    .black
-      background-color: black
-  td.inactive
-    background-color: black
-  td.pending_white, td.pending_black
-    background-color: yellow
+.board_table td
+  height: 50px
+  width: 50px
+  background-color: #8C979A 
+  margin: 0
+  padding: 0
+  &:hover
+    background-color: #598AB1 //This is a mixture of #0074D9 and #8C979A
+
+.board_table td.pending_white, 
+.board_table td.pending_black
+  background-color: yellow
+
+.board_table td.inactive
+  background-color: white
+ 
+.board_table td.white_goal
+  background-color: #C1C7C9 
+  &:hover
+    background-color: #7BA9CF
+.board_table td.black_goal
+  background-color: #555F61 
+  &:hover
+    background-color: #36678D
+.board_table td.winner
+  background-color: #598AB1
+
+.board_table td .chip
+  height: 45px
+  width: 45px
+  border-radius: 999px
+  margin: 0 auto
+.board_table td .chip
+  background-color: #F2F3F4
+.board_table td .black
+  background-color: #373D3F 
+
+
   

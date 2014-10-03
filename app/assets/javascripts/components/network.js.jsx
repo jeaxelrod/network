@@ -19,17 +19,19 @@ var Board = React.createClass({
   },
   boardClick: function(point) {
     var current_square = this.refs[point];
-    if (this.props.type != "online" || this.state.turn == this.state.player) {
-      if (current_square.props.type != "inactive") {
-        if (this.state.stepMoveTime) {
-          if (this.state.pendingStepMove) {
-            this.finishStepMove(point);
+    if (this.state.winner == "") {
+      if (this.props.type != "online" || this.state.turn == this.state.player) {
+        if (current_square.props.type != "inactive") {
+          if (this.state.stepMoveTime) {
+            if (this.state.pendingStepMove) {
+              this.finishStepMove(point);
+            } else {
+              this.startStepMove(point);
+            }
           } else {
-            this.startStepMove(point);
-          }
-        } else {
-          if (this.validMove(point)) {
-            this.addChip(point);
+            if (this.validMove(point)) {
+              this.addChip(point);
+            }
           }
         }
       }
@@ -201,18 +203,38 @@ var Board = React.createClass({
       var row = [];
       var tr = React.DOM.tr;
       for (var i=0; i<8; i++) {
+        var extraClasses = " ";
         var point = (i * 10) + j;
         var type = "";
-        if (this.state.winner != "" ||
-           ((j == 0 || j == 7) && (i == 0 || i == 7))) {
+        if ((j == 0 || j == 7) && (i == 0 || i == 7)) {
           type = "inactive";
         } else if (white.indexOf(point) >= 0) {
           type = "white";
         } else if (black.indexOf(point) >= 0) {
           type = "black";
         } 
+
         if (point == this.state.pendingStepMove) {
           type = "pending_" + type;
+        }
+
+        if (this.state.winner == "white") {
+          if (this.state.networks.white.complete[0].indexOf(point) >= 0) {
+            extraClasses += " winner";
+          }
+        } else if (this.state.winner == "black") {
+          if (this.state.networks.black.complete[0].indexOf(point) >= 0) {
+            extraClasses += " winner";
+          }
+        }
+        if (j == 0 || j == 7) {
+          if ( i != 0 && i != 7) {
+            extraClasses += " black_goal"
+          }
+        } else {
+          if ( i == 0 || i == 7) {
+            extraClasses += " white_goal"
+          }
         }
         row.push(<BoardSquare
                     coordinate = {point}
@@ -220,6 +242,7 @@ var Board = React.createClass({
                     onClick = {this.boardClick}
                     ref = {point}
                     key = {point}
+                    extraClasses={extraClasses}
                   />);
       }
       var classString = "row" + j;
@@ -246,7 +269,8 @@ var BoardSquare = React.createClass({
   },
   render: function() {
     var chip;
-    var classes = "board_square" + " " + this.props.coordinate + " " + this.props.type;
+    var classes = "board_square" + " " + this.props.coordinate + " " + 
+                  this.props.type + this.props.extraClasses;
     if (!this.props.inactive) {
       if (this.props.type == "white" || this.props.type == "pending_white") {
         chip = <Chip color= "white" coordinate={this.props.coordinate} />
