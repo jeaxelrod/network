@@ -108,7 +108,6 @@ var Board = React.createClass({
   },
   startStepMove: function(point) {
     var square = this.refs[point];
-    console.log(square.props.type);
     if ( square &&
         (this.state.turn == "black" && square.props.type.match(/black/) ||
          this.state.turn == "white" &&  square.props.type.match(/white/))) {
@@ -166,7 +165,6 @@ var Board = React.createClass({
       type: 'POST',
       data: {'id': this.props.id },
       success: function(data) {
-        console.log(data.networks);
         var updated_chips = data.chips;
         if (!updated_chips.black.equals(this.state.chips.black) || 
             !updated_chips.white.equals(this.state.chips.white)) {
@@ -246,14 +244,16 @@ var Board = React.createClass({
                   />);
       }
       var classString = "row" + j;
-      board_rows.push(<tr className={classString}>{row}</tr>);
+      board_rows.push(<tr key={j} className={classString}>{row}</tr>);
     }
     return (
       <div>
         <BoardHeader  
-          color = {this.state.turn} 
-          networks={this.state.networks}
+          turn = {this.state.turn} 
+          player = {this.state.turn}
+          typeOfGame = {this.props.type}
           winner= {this.state.winner}
+          chips = {this.state.chips}
         />
         <table className="board_table">
           {board_rows}
@@ -296,64 +296,74 @@ var Chip = React.createClass({
 
 var BoardHeader = React.createClass({
   render: function() {
-    var networks = this.props.networks
-    var white_incomplete = networks["white"]["incomplete"];
-    var black_incomplete = networks["black"]["incomplete"];
-    var white_incomplete_display = "";
-    for (var i=0; i < white_incomplete.length; i++) {
-      var network = white_incomplete[i];
-      white_incomplete_display += "[ "
-      for (var m=0; m < network.length; m++) {
-        point = network[m];
-        white_incomplete_display += point + ", "
+    var title, currentTurn, chipsColor;
+    var chips = this.props.chips;
+    var winner_display = "";
+    switch (this.props.typeOfGame) {
+    case "local":
+      title = "Local Network";
+      currentTurn = this.props.turn.capitalize();
+      chipsColor = this.props.turn;
+      if (this.props.winner != "") {
+        winner_display = this.props.winner.capitalize() + " wins!";
       }
-      white_incomplete_display += "] ,"
-    }
-    var black_incomplete_display = "";
-    for (var i=0; i < black_incomplete.length; i++) {
-      var network = black_incomplete[i];
-      black_incomplete_display += "[ "
-      for (var m=0; m < network.length; m++) {
-        point = network[m];
-        black_incomplete_display += point + ", "
+      break;
+    case "online":
+      title = "Multiplayer Network";
+      chipsColor = this.props.player;
+      if (this.props.turn === this.props.player) {
+        currentTurn = "Your's"
+      } else {
+        currentTurn = "Their's";
       }
-      black_incomplete_display += "] ,"
-    }
-    var white_complete = networks["white"]["complete"];
-    var white_complete_display = "";
-    for (var i=0; i < white_complete.length; i++) {
-      var network = white_complete[i];
-      white_complete_display += "[ "
-      for (var m=0; m < network.length; m++) {
-        point = network[m];
-        white_complete_display += point + ", "
+      if (this.props.winner != "") {
+        if (this.props.winner == this.props.player) {
+          winner_display = "You win!";
+        } else {
+          winner_display = "You lose";
+        }
       }
-      white_complete_display += "] ,"
-    }
-    var black_complete = networks["black"]["complete"];
-    var black_complete_display = "";
-    for (var i=0; i < black_complete.length; i++) {
-      var network = black_complete[i];
-      black_complete_display += "[ "
-      for (var m=0; m < network.length; m++) {
-        point = network[m];
-        black_complete_display += point + ", "
+      break;
+    case "computer":
+      title = "Computer Network";
+      chipsColor = this.props.player;
+      if (this.props.turn === this.props.player) {
+        currentTurn = "Your's";
+      } else {
+        currentTurn = "Computer's";
       }
-      black_complete_display += "] ,"
+      if (this.props.winner != "") {
+        if (this.props.winner == this.props.player) {
+          winner_display = "You win!";
+        } else {
+          winner_display = "You lose";
+        }
+      }
+      break;
     }
-    var winner_display = this.props.winner;
-    if (winner_display != "") {
-      winner_display += " wins!";
+    var chipsLength = 10 - chips[chipsColor].length;
+    var table_rows = [];
+    for (var j=0; j<2; j++) {
+      var each_row = [];
+      for (var i=0; i<5; i++) {
+        if (chipsLength > 0) {
+          each_row.push(<td key ={i*10 + j}><Chip color={chipsColor} coordinate ="" /></td>);
+          chipsLength--;
+        } else {
+          each_row.push(<td />);
+        }
+      }
+      table_rows.push(<tr key={j}>{each_row}</tr>);
     }
+
     return ( 
       <div className="board_header">
-        <h1 className="title">Network</h1>
         <h1>{winner_display}</h1>
-        <h2 className="sub-title">{this.props.color}'s turn</h2>
-        <h2 className="white-networks">White incomplete: {white_incomplete_display}</h2>
-        <h2 className="black-networks">Black incomplete: {black_incomplete_display}</h2>
-        <h2 className="black-networks">White complete: {white_complete_display}</h2>
-        <h2 className="black-networks">Black complete: {black_complete_display}</h2>
+        <h2 className="sub-title">Turn: <span className={this.props.turn + "_turn"}>{currentTurn}</span></h2>
+        <div className="current_chips">
+          <h2>Chips:</h2>
+          <table>{table_rows}</table> 
+        </div>
       </div>
     );
   }

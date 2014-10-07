@@ -1,9 +1,19 @@
+
+.board-title
+  padding-left: 50px
+  font-size: 40px
+  color: #373D3F
+
+.board_table
+  float: left 
+  border-collapse: separate
+  border-spacing: 1px
+
 .board_table td
   height: 50px
   width: 50px
+  vertical-align: middle 
   background-color: #8C979A 
-  margin: 0
-  padding: 0
   &:hover
     background-color: #598AB1 //This is a mixture of #0074D9 and #8C979A
 
@@ -25,7 +35,8 @@
 .board_table td.winner
   background-color: #598AB1
 
-.board_table td .chip
+.board_table td .chip,
+.current_chips .chip
   height: 45px
   width: 45px
   border-radius: 999px
@@ -34,6 +45,37 @@
   background-color: #F2F3F4
 .board_table td .black
   background-color: #373D3F 
+
+.board_header 
+  display: inline-block
+  margin-left: 20px
+  color: #373D3F
+.board_header h1
+  font-size: 40px
+.board_header h2
+  font-size: 30px
+
+.board_header h2 .white_turn
+  color: #8C979A
+.current_chips table
+  float: right
+  border-collapse: separate
+  border-spacing: 1px
+.current_chips h2
+  float: left
+.current_chips td
+  height: 28px
+  width: 28px
+  vertical-align: bottom
+.current_chips td .chip
+  height: 28px
+  width: 28px
+.current_chips td .white
+  border: 1px solid #373D3F 
+.current_chips td .black
+  background-color: #373D3F
+
+
 
 
   
