@@ -20,8 +20,8 @@ feature "Board structure" do
     all('td.board_square')[10].click
     all('td.board_square')[10].click
 
-    expect(page).to have_css "td div.white.chip"
-    expect(page.all("div.chip").count).to eql(1)
+    within(".board_table") { expect(page).to have_css "td div.white.chip" }
+    within(".board_table") { expect(page.all("div.chip").count).to eql(1) }
   end
   scenario "Adding chip to two chips in a connected group", js: true do
     visit local_path
@@ -31,7 +31,7 @@ feature "Board structure" do
     all('td.board_square')[2].click
     all('td.board_square')[12].click
 
-    expect(page.all("div.chip").count).to eql(4) 
+    within(".board_table") { expect(page.all("div.chip").count).to eql(4) }
   end
   scenario "Adding chip to two chips in a connected group", js: true do
     visit local_path
@@ -41,7 +41,7 @@ feature "Board structure" do
     all('td.board_square')[2].click
     all('td.board_square')[11].click
 
-    expect(page.all("div.white.chip").count).to eql(2) 
+    within(".board_table") { expect(page.all("div.white.chip").count).to eql(2) }
   end
   
   scenario "Performing a step move", js: true do
