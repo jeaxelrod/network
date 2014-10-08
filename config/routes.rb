@@ -16,6 +16,9 @@ Rails.application.routes.draw do
   get 'board' => 'board#show'
   post "/network/update" => "network#update"
 
+  get "tutorial/teams" => "tutorial#teams"
+  get "tutorial/board" => "tutorial#board"
+
   match "/placeChip" => "network#placeChip", :via => :post
   match "/getNetworks" => "network#getNetworks", :via => :post
   match "/player/create" => "network#createPlayer", :via => :post

@@ -36,14 +36,16 @@
   background-color: #598AB1
 
 .board_table td .chip,
-.current_chips .chip
+.current_chips .chip,
+.tutorial .chip
   height: 45px
   width: 45px
   border-radius: 999px
   margin: 0 auto
 .board_table td .chip
   background-color: #F2F3F4
-.board_table td .black
+.board_table td .black,
+.tutorial .black
   background-color: #373D3F 
 
 .board_header 
@@ -70,12 +72,27 @@
 .current_chips td .chip
   height: 28px
   width: 28px
-.current_chips td .white
+.current_chips td .white,
+.tutorial .white
   border: 1px solid #373D3F 
 .current_chips td .black
   background-color: #373D3F
 
-
+.tutorial h1
+  font-size: 40px
+.tutorial p
+  font-size: 20px
+.tutorial .board_table
+  float: none
+.tutorial .board_table td
+  background-color: white
+  &:hover
+    background-color: white
+.board_table td .white
+  background-color: white
+.tutorial .white_team,
+.tutorial .black_team
+  display: inline-block
 
 
   
