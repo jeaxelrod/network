@@ -250,7 +250,7 @@ var Board = React.createClass({
       <div>
         <BoardHeader  
           turn = {this.state.turn} 
-          player = {this.state.turn}
+          player = {this.state.player}
           typeOfGame = {this.props.type}
           winner= {this.state.winner}
           chips = {this.state.chips}
