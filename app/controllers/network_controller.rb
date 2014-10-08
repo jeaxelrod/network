@@ -81,8 +81,9 @@ class NetworkController < ApplicationController
       @data[:chips] = @chips
     elsif game.game_type == "computer"
       random_computer = RandomComputer.new(:chips => @chips)
-      random_computer.move(:black)
-      @chips = random_computer.chips
+      move = random_computer.move(:black)
+      @chips[:black] << move.added_chip
+      @chips[:black].delete(move.deleted_chip)
       @data[:chips] = {:white => @chips[:white], :black => @chips[:black]}
       network_finder = NetworkFinder.new(:chips => @chips)
       @data[:networks] = {:white => network_finder.white, :black => network_finder.black}

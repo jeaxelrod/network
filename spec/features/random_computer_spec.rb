@@ -7,7 +7,7 @@ feature "Random computer player" do
 
     all('td.board_square')[10].click
 
-    expect(page.all("div.chip").count).to eql(2)
+    within(".board_table") { expect(page.all("div.chip").count).to eql(2) } 
   end
   scenario "Step moves", js: true do
     visit computer_path
@@ -27,7 +27,11 @@ feature "Random computer player" do
     all('td.board_square')[47].click
 
     expect(page.all("div.chip").count).to eql(20)
-    within(page.all('td.board_square')[47]) { expect(page).to have_css "div.chip" }
-    within(page.all('td.board_square')[placed_chips[9]]) { expect(page).to_not have_css "div.chip" }
+    within(".board_table") do 
+      within(page.all('td.board_square')[47]) { expect(page).to have_css "div.chip" }
+    end 
+    within(".board_table") do
+      within(page.all('td.board_square')[placed_chips[9]]) { expect(page).to_not have_css "div.chip" }
+    end 
   end
 end
