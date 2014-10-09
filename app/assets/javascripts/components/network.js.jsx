@@ -6,7 +6,7 @@ var Board = React.createClass({
       networks: {"white": {"incomplete": [], "complete": []} , 
                  "black": {"incomplete": [], "complete": []}},
       player: this.props.player, //Color of player 
-      turn: "white", //color of current turn
+      turn: this.props.turn || "white", //color of current turn
       pendingStepMove: null,
       stepMoveTime: false,
       winner: ""

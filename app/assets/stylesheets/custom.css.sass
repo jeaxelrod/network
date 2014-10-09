@@ -45,7 +45,7 @@
 .board_table td .chip
   background-color: #F2F3F4
 .board_table td .black,
-.tutorial .black
+.tutorial .chip_table .black
   background-color: #373D3F 
 
 .board_header 
@@ -73,26 +73,72 @@
   height: 28px
   width: 28px
 .current_chips td .white,
-.tutorial .white
+.tutorial .chip_table .white
   border: 1px solid #373D3F 
 .current_chips td .black
   background-color: #373D3F
 
+/* Styling for the tutorial */
 .tutorial h1
   font-size: 40px
+  margin-bottom: 20px
+  margin-top: 40px
+  text-align: center
 .tutorial p
   font-size: 20px
 .tutorial .board_table
   float: none
-.tutorial .board_table td
+  display: inline-block
+.tutorial .chip_table
+  border-collapse: separate
+  border-spacing: 1px
+.tutorial .chip_table td
   background-color: white
   &:hover
     background-color: white
-.board_table td .white
+.chip_table td .white
   background-color: white
 .tutorial .white_team,
 .tutorial .black_team
   display: inline-block
 
-
+.tutorial .game_board
+  width: 670px
+  margin: auto
+.tutorial .board_header
+  float: right 
+.tutorial .board_header h1
+  margin-bottom: 0
+  margin-top: 0
+.tutorial .blue
+  color: #7BA9CF
+.tutorial .red
+  color: #cf7b7f
+.white_board .board_table td.inactive,
+.black_board .board_table td.inactive
+  background-color: white
+.white_board .board_table td
+  background-color: #7BA9CF
+  &:hover
+    background-color: #598AB1
+.white_board .board_table td.white_goal
+  background-color: #b3cee3
+  &:hover
+    background-color: #689dc8
+.white_board .board_table td.black_goal
+  background-color: #555F61 
+  &:hover
+    background-color: #36678D
+.black_board .board_table td
+  background-color: #cf7b7f
+  &:hover
+    background-color: #b1595e
+.black_board .board_table td.white_goal
+  background-color: #C1C7C9 
+  &:hover
+    background-color: #7BA9CF
+.black_board .board_table td.black_goal
+  background-color: #ba4449 
+  &:hover
+    background-color: #924549
   

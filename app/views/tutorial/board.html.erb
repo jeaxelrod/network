@@ -1,0 +1,14 @@
+<div class="tutorial">
+  <div class="game_board">
+    <h1>This is the game board</h1>
+    <%= react_component 'Board', type: "local", id: @board_id, player: "white" %>
+  </div>
+  <div class="game_board white_board">
+    <h1><span class="blue">Blue</span> is where you can place white chips</h1>
+    <%= react_component 'Board', type: "local", id: @white_board_id, player: "white" %>
+  </div>
+  <div class="game_board black_board">
+    <h1><span class="red">Red</span> is where you can place black chips</h1>
+    <%= react_component 'Board', type: "local", id: @black_board_id, player: "black", turn: "black" %>
+  </div>
+</div>
