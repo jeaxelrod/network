@@ -18,6 +18,7 @@ Rails.application.routes.draw do
 
   get "tutorial/teams" => "tutorial#teams"
   get "tutorial/board" => "tutorial#board"
+  get "tutorial/chip_placement" => "tutorial#chip_placement"
 
   match "/placeChip" => "network#placeChip", :via => :post
   match "/getNetworks" => "network#getNetworks", :via => :post

@@ -1,14 +1,21 @@
 /** @jsx React.DOM */
 var Board = React.createClass({
   getInitialState: function() {
+    var stepMoveTime = false;
+    if (this.props.chips) {
+      if (this.props.chips["white"].length >= 10 ||
+          this.props.chips["black"].length >= 10) {
+        stepMoveTime = true;
+      }
+    }
     return {
-      chips: {"white": [], "black": []},
+      chips: this.props.chips || {"white": [], "black": []},
       networks: {"white": {"incomplete": [], "complete": []} , 
                  "black": {"incomplete": [], "complete": []}},
       player: this.props.player, //Color of player 
       turn: this.props.turn || "white", //color of current turn
       pendingStepMove: null,
-      stepMoveTime: false,
+      stepMoveTime: stepMoveTime,
       winner: ""
     };
   },

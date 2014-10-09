@@ -9,7 +9,8 @@
   border-collapse: separate
   border-spacing: 1px
 
-.board_table td
+.board_table td,
+.mini_board td
   height: 50px
   width: 50px
   vertical-align: middle 
@@ -42,7 +43,8 @@
   width: 45px
   border-radius: 999px
   margin: 0 auto
-.board_table td .chip
+.board_table td .chip,
+.mini_board td .chip
   background-color: #F2F3F4
 .board_table td .black,
 .tutorial .chip_table .black
@@ -102,7 +104,7 @@
 .tutorial .black_team
   display: inline-block
 
-.tutorial .game_board
+.tutorial
   width: 670px
   margin: auto
 .tutorial .board_header
@@ -141,4 +143,16 @@
   background-color: #ba4449 
   &:hover
     background-color: #924549
-  
+.tutorial .mini_board
+  margin: 10px
+  border-collapse: separate
+  border-spacing: 1px
+  display: inline-block
+.tutorial .mini_board td
+  color: white
+  font-size: 50px
+  text-align: center
+  font-family: arial
+  cursor: default 
+  height: 50px
+  width: 50px

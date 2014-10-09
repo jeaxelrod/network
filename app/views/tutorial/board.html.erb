@@ -11,4 +11,5 @@
     <h1><span class="red">Red</span> is where you can place black chips</h1>
     <%= react_component 'Board', type: "local", id: @black_board_id, player: "black", turn: "black" %>
   </div>
+  <%= link_to "Next: Chip Placement", tutorial_chip_placement_path %>
 </div>

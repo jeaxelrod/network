@@ -1,0 +1,73 @@
+<div class="tutorial">
+  <h1>Chip Placement</h1>
+  <p>There are two special rules of chip placement</p>
+  <div class="chip_groups">
+    <p>Rule 1: You can't have groups of more then two adjacent chips</p>
+    <div class="examples_groups">
+      <p>The X's represent invalid Moves
+      <table class="mini_board">
+        <tbody>
+          <tr class="row0">
+            <td class="board_square 0"><div class="chip white"></div></td>
+            <td class="board_square 10">X</td>
+            <td class="board_square 20"></td>
+          </tr>
+          <tr class="row1">
+            <td class="board_square 1"><div class="chip white"></div></td>
+            <td class="board_square 11">X</td>
+            <td class="board_square 21"></td>
+          </tr>
+          <tr class="row2">
+            <td class="board_square 2">X</td>
+            <td class="board_square 12">X</td>
+            <td class="board_square 22"><div class="chip white"></div></td>
+          </tr>
+        </tbody>
+      </table>
+      <table class="mini_board">
+        <tbody>
+          <tr class="row0">
+            <td class="board_square 0"></td>
+            <td class="board_square 10">X</td>
+            <td class="board_square 20"></td>
+          </tr>
+          <tr class="row1">
+            <td class="board_square 1"><div class="chip white"></div></td>
+            <td class="board_square 11">X</td>
+            <td class="board_square 21"><div class="chip white"></div></td>
+          </tr>
+          <tr class="row2">
+            <td class="board_square 2"></td>
+            <td class="board_square 12">X</td>
+            <td class="board_square 22"></td>
+          </tr>
+        </tbody>
+      </table>
+      <table class="mini_board">
+        <tbody>
+          <tr class="row0">
+            <td class="board_square 0">X</td>
+            <td class="board_square 10">X</td>
+            <td class="board_square 20">X</td>
+          </tr>
+          <tr class="row1">
+            <td class="board_square 1">X</td>
+            <td class="board_square 11"><div class="chip white"></div></td>
+            <td class="board_square 21">X</td>
+          </tr>
+          <tr class="row2">
+            <td class="board_square 2"><div class="chip white"></div></td>
+            <td class="board_square 12">X</td>
+            <td class="board_square 22">X</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="step_move">
+    <p>Rule 2: Step moves</p>
+    <p>Each player only gets ten chips. After all ten chips have been placed on the board you must execute a step move</p>
+    <p>In a step move, you move one of your chips to a different square. Try it below by clicking on one of your chips</p>
+    <%= react_component "Board", type: "local", id: @step_move_board_id, player: "white", chips: @chips %>
+  </div>
+</div>
