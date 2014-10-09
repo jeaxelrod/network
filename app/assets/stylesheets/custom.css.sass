@@ -19,8 +19,9 @@
     background-color: #598AB1 //This is a mixture of #0074D9 and #8C979A
 
 .board_table td.pending_white, 
-.board_table td.pending_black
-  background-color: yellow
+.board_table td.pending_black,
+.mini_board td.highlight
+  background-color: #cfcb7b 
 
 .board_table td.inactive
   background-color: white
@@ -47,7 +48,8 @@
 .mini_board td .chip
   background-color: #F2F3F4
 .board_table td .black,
-.tutorial .chip_table .black
+.tutorial .chip_table .black,
+.mini_board td .black
   background-color: #373D3F 
 
 .board_header 
@@ -119,7 +121,8 @@
 .white_board .board_table td.inactive,
 .black_board .board_table td.inactive
   background-color: white
-.white_board .board_table td
+.white_board .board_table td,
+.goal_areas  .board_table td.white_goal
   background-color: #7BA9CF
   &:hover
     background-color: #598AB1
@@ -127,11 +130,12 @@
   background-color: #b3cee3
   &:hover
     background-color: #689dc8
-.white_board .board_table td.black_goal
+.white_board .board_table td.black_goal,
   background-color: #555F61 
   &:hover
     background-color: #36678D
-.black_board .board_table td
+.black_board .board_table td,
+.goal_areas  .board_table td.black_goal
   background-color: #cf7b7f
   &:hover
     background-color: #b1595e

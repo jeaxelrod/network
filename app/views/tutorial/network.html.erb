@@ -1,0 +1,51 @@
+<div class="tutorial">
+  <h1>How to Win</h1>
+  <div class="goal_areas">
+    <h2>Goal Area</h2>
+    <p><span class="blue">Blue</span> is white's goal area</p>
+    <p><span class="red">Red</span> is black's goal area</p>
+    <%= react_component "Board", type: "local", id: @goal_area_board_id, player: "white" %>
+  </div>
+  <div class="winning">
+    <h2>Making Networks</h2>
+    <p>The player who makes a complete network first wins!</p>
+    <p>A network is a connected sequence of six or more chips that starts in one of your goal areas and ends in the other</p>
+    <p>Chips are connected to each if there is a clear path vertically, horizontally, or diagonally</p>
+    <p>Let's looks at some examples</p>
+    <table class="mini_board">
+      <tbody>
+        <tr class="row0">
+          <td class="board_square 0"><div class="chip white"></div></td>
+          <td class="board_square 10"></td>
+          <td class="board_square 20"><div class="chip white"></div></td>
+          <td class="board_square 30"></td>
+        </tr>
+        <tr class="row1">
+          <td class="board_square 1"><div class="chip black"></div></td>
+          <td class="board_square 11"></td>
+          <td class="board_square 21"></td>
+          <td class="board_square 31"></td>
+        </tr>
+        <tr class="row2">
+          <td class="board_square 2 highlight"><div class="chip white"></div></td>
+          <td class="board_square 12"></td>
+          <td class="board_square 22"></td>
+          <td class="board_square 32"><div class="chip white"></div></td>
+        </tr>
+        <tr class="row3">
+          <td class="board_square 3"></td>
+          <td class="board_square 12"><div class="chip white"></div></td>
+          <td class="board_square 22"></td>
+          <td class="board_square 32"></td>
+        </tr>
+      </tbody>
+    </table>
+    <p>There are three connections to the highlighted chip. Notice that a black chip blocks one of the connections</p>
+    <p>Futhermore, a network cannot pass through the same chip twice</p>
+    <p>A network can only have the two chips in the goal area: the first and last chip in the network</p>
+    <p>And a network cannot pass through a chip without changing direction</p>
+    <p>Let's look at a valid network</p>
+    <%= react_component "Board", type: "local", id: @network_board_id, player: "white", chips: @network_chips %>
+
+</div>
+

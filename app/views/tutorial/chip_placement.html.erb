@@ -70,4 +70,5 @@
     <p>In a step move, you move one of your chips to a different square. Try it below by clicking on one of your chips</p>
     <%= react_component "Board", type: "local", id: @step_move_board_id, player: "white", chips: @chips %>
   </div>
+  <%= link_to "Next: How to Win", tutorial_network_path %>
 </div>
