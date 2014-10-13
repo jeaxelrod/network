@@ -1,7 +1,10 @@
 <div class="tutorial">
   <div class="game_board">
     <h1>This is the game board</h1>
+    <p><span class="light-gray">This</span> is white's goal area</p>
+    <p><span class="dark-gray">This</span> is black's goal area</p>
     <%= react_component 'Board', type: "local", id: @board_id, player: "white" %>
+    <p>Each color cannot play in their opponent's goal area.</p>
   </div>
   <div class="game_board white_board">
     <h1><span class="blue">Blue</span> is where you can place white chips</h1>

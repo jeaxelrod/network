@@ -1,8 +1,29 @@
+$black: #373D3F
+$white: #F2F3F4
+$gray: #8C979A
+$gray-highlight: #598AB1 //This is a mixture of #0074D9 and $gray
+$light-gray: #C1C7C9
+$light-gray-highlight: #7BA9CF
+$dark-gray: #555F61
+$dark-gray-highlight: #36678D
+$yellow-highlight: #CFCB7B
+$red: #BA4449
+$red-hover: #924549
+$light-red: #CF7B7F
+$light-red-hover: #B1595E
+$light-blue: #B3CEE3
+$light-blue-hover: #689DC8
+
+.light-gray
+  color: $light-gray
+
+.dark-gray
+  color: $dark-gray
 
 .board-title
   padding-left: 50px
   font-size: 40px
-  color: #373D3F
+  color: $black
 
 .board_table
   float: left 
@@ -14,28 +35,28 @@
   height: 50px
   width: 50px
   vertical-align: middle 
-  background-color: #8C979A 
+  background-color: $gray 
   &:hover
-    background-color: #598AB1 //This is a mixture of #0074D9 and #8C979A
+    background-color: $gray-highlight //This is a mixture of #0074D9 and $gray
 
 .board_table td.pending_white, 
 .board_table td.pending_black,
 .mini_board td.highlight
-  background-color: #cfcb7b 
+  background-color: $yellow-highlight
 
 .board_table td.inactive
   background-color: white
  
 .board_table td.white_goal
-  background-color: #C1C7C9 
+  background-color: $light-gray 
   &:hover
-    background-color: #7BA9CF
+    background-color: $light-gray-highlight
 .board_table td.black_goal
-  background-color: #555F61 
+  background-color: $dark-gray 
   &:hover
-    background-color: #36678D
+    background-color: $dark-gray-highlight
 .board_table td.winner
-  background-color: #598AB1
+  background-color: $gray-highlight
 
 .board_table td .chip,
 .current_chips .chip,
@@ -46,23 +67,23 @@
   margin: 0 auto
 .board_table td .chip,
 .mini_board td .chip
-  background-color: #F2F3F4
+  background-color: $white 
 .board_table td .black,
 .tutorial .chip_table .black,
 .mini_board td .black
-  background-color: #373D3F 
+  background-color: $black 
 
 .board_header 
   display: inline-block
   margin-left: 20px
-  color: #373D3F
+  color: $black
 .board_header h1
   font-size: 40px
 .board_header h2
   font-size: 30px
 
 .board_header h2 .white_turn
-  color: #8C979A
+  color: $gray
 .current_chips table
   float: right
   border-collapse: separate
@@ -78,9 +99,9 @@
   width: 28px
 .current_chips td .white,
 .tutorial .chip_table .white
-  border: 1px solid #373D3F 
+  border: 1px solid $black 
 .current_chips td .black
-  background-color: #373D3F
+  background-color: $black
 
 /* Styling for the tutorial */
 .tutorial h1
@@ -115,38 +136,38 @@
   margin-bottom: 0
   margin-top: 0
 .tutorial .blue
-  color: #7BA9CF
+  color: $light-gray-highlight
 .tutorial .red
-  color: #cf7b7f
+  color: $light-red 
 .white_board .board_table td.inactive,
 .black_board .board_table td.inactive
   background-color: white
 .white_board .board_table td,
 .goal_areas  .board_table td.white_goal
-  background-color: #7BA9CF
+  background-color: $light-gray-highlight
   &:hover
-    background-color: #598AB1
+    background-color: $gray-highlight
 .white_board .board_table td.white_goal
-  background-color: #b3cee3
+  background-color: $light-blue 
   &:hover
-    background-color: #689dc8
+    background-color: $light-blue-hover 
 .white_board .board_table td.black_goal,
-  background-color: #555F61 
+  background-color: $dark-gray 
   &:hover
-    background-color: #36678D
+    background-color: $dark-gray-highlight
 .black_board .board_table td,
 .goal_areas  .board_table td.black_goal
-  background-color: #cf7b7f
+  background-color: $light-red 
   &:hover
-    background-color: #b1595e
+    background-color: $light-red-hover 
 .black_board .board_table td.white_goal
-  background-color: #C1C7C9 
+  background-color: $light-gray 
   &:hover
-    background-color: #7BA9CF
+    background-color: $light-gray-highlight
 .black_board .board_table td.black_goal
-  background-color: #ba4449 
+  background-color: $red 
   &:hover
-    background-color: #924549
+    background-color: $red-hover 
 .tutorial .mini_board
   margin: 10px
   border-collapse: separate
