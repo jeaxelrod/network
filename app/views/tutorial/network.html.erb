@@ -1,11 +1,6 @@
 <div class="tutorial">
   <h1>How to Win</h1>
-  <div class="goal_areas">
-    <h2>Goal Area</h2>
-    <p><span class="blue">Blue</span> is white's goal area</p>
-    <p><span class="red">Red</span> is black's goal area</p>
-    <%= react_component "Board", type: "local", id: @goal_area_board_id, player: "white" %>
-  </div>
+
   <div class="winning">
     <h2>Making Networks</h2>
     <p>The player who makes a complete network first wins!</p>
@@ -40,12 +35,25 @@
         </tr>
       </tbody>
     </table>
-    <p>There are three connections to the highlighted chip. Notice that a black chip blocks one of the connections</p>
+    <p>There are three connections to the <span class="yellow">highlighted</span> chip. Notice that a black chip blocks one of the connections</p>
     <p>Futhermore, a network cannot pass through the same chip twice</p>
     <p>A network can only have the two chips in the goal area: the first and last chip in the network</p>
     <p>And a network cannot pass through a chip without changing direction</p>
+    <table class="mini_board">
+      <tbody>
+        <tr class="row0">
+          <td class="board_square 0"><div class="chip white"></div></td>
+          <td class="board_square 10"><div class="chip white"></div></td>
+          <td class="board_square 20"></td>
+          <td class="board_square 30"><div class="chip white"></div></td>
+        </tr>
+      </tbody>
+    </table>
+    <p>If a network included these chips, it wouldn't be valid because it doesn't change directions after the first connection</p>
     <p>Let's look at a valid network</p>
     <%= react_component "Board", type: "local", id: @network_board_id, player: "white", chips: @network_chips %>
+    <%= react_component "NetworkHighlighter", network: @networks %>
+    <p><%= @networks[:black] %></p>
 
 </div>
 

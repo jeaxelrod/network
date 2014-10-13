@@ -27,10 +27,12 @@ class TutorialController < ApplicationController
     goal_area_board = Board.new(game_type: "local")
     goal_area_board.save
     @goal_area_board_id = goal_area_board.id
-    white_chips = [20, 60, 42, 13, 33, 25, 35, 55, 65, 57]
-    network_board = Board.new(game_type: "tutorial", white: white_chips, black: [])
+    black_chips = [20, 60, 42, 13, 33, 35, 55, 65, 57]
+    network_board = Board.new(game_type: "tutorial", white: [], black: black_chips)
     network_board.save
     @network_chips = {white: network_board.white, black: network_board.black}
+    network_finder = NetworkFinder.new(chips: @network_chips)
+    @networks = {black: network_finder.black[:complete], white: network_finder.white[:complete]}
     @network_board_id = network_board.id
 
   end
