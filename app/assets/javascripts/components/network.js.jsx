@@ -366,7 +366,7 @@ var BoardHeader = React.createClass({
     return ( 
       <div className="board_header">
         <h1>{winner_display}</h1>
-        <h2 className="sub-title">Turn: <span className={this.props.turn + "_turn"}>{currentTurn}</span></h2>
+        <h2 className="sub_title">Turn: <span className={this.props.turn + "_turn"}>{currentTurn}</span></h2>
         <div className="current_chips">
           <h2>Chips:</h2>
           <table>{table_rows}</table> 

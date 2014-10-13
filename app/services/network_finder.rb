@@ -24,7 +24,19 @@ class NetworkFinder
         networks[:incomplete] += new_networks[:incomplete]
       end
     end
+    networks[:complete].each do |network|
+      if network.first > network.last
+        network.reverse!
+      end
+    end
+    networks[:complete].uniq!
     networks[:complete].sort! { |x, y| x.length <=> y.length }
+    networks[:incomplete].each  do |network|
+      if network.first > network.last
+        network.reverse!
+      end
+    end
+    networks[:incomplete].uniq!
     networks[:incomplete].sort! { |x, y| y.length <=> x.length }
     networks
   end
@@ -131,31 +143,19 @@ class NetworkFinder
     else
       filter_area = lambda { |chip| in_goal_area?(chip) }
     end
-    if color == :black
-      foreign_chips = @white_chips.dup
-      own_chips = @black_chips.dup
-      if options[:goal]
-        own_chips = own_chips.select { |a| BLACK_GOAL_AREAS.include?(a) }
-      end
-    else
-      foreign_chips = @black_chips.dup
-      own_chips = @white_chips.dup
-      if options[:goal]
-        own_chips = own_chips.select { |a| WHITE_GOAL_AREAS.include?(a) }
-      end
-    end
-    directions_with_actions.delete(getDirection(prev_chip, chip))
+    unwanted_chips, wanted_chips = set_chip_grouping(network, color, options)
+        directions_with_actions.delete(getDirection(prev_chip, chip))
     directions_with_actions.each do |direction, action|
       current_coord = chip
       next_chip = nil
       while next_chip == nil
         current_coord += action
         if filter_area.call(current_coord) || 
-            foreign_chips.include?(current_coord) ||
+            unwanted_chips.include?(current_coord) ||
             network.include?(current_coord)
           break
         end
-        if own_chips.include? current_coord
+        if wanted_chips.include? current_coord
           next_chip = current_coord
           next_chips << next_chip
         end
@@ -163,7 +163,32 @@ class NetworkFinder
     end
     next_chips
   end
-  
+
+  def set_chip_grouping(network, color, options)
+    if color == :black
+      foreign_chips = @white_chips.dup
+      own_chips = @black_chips.dup
+      if options[:goal]
+        foreign_chips.push(own_chips.select { |a| !BLACK_GOAL_AREAS.include?(a) }).flatten!
+        goal_area = BLACK_GOAL_AREAS.select do |point|
+          network[0] % 10 != point % 10
+        end
+        own_chips = own_chips.select { |a| goal_area.include?(a) }
+      end
+    else
+      foreign_chips = @black_chips.dup
+      own_chips = @white_chips.dup
+      if options[:goal]
+        foreign_chips.push(own_chips.select { |a| !WHITE_GOAL_AREAS.include?(a) }).flatten!
+        goal_area = WHITE_GOAL_AREAS.select do |point|
+          network[0] % 10 != point % 10
+        end
+        own_chips = own_chips.select { |a| WHITE_GOAL_AREAS.include?(a) }
+      end
+    end
+    return foreign_chips, own_chips
+  end
+
   def past_goal_area?(chip)
     if chip <= 0 || chip >= 77 || chip % 10 > 7 
       return true
