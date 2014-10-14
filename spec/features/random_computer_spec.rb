@@ -5,7 +5,7 @@ feature "Random computer player" do
   scenario "Adding a chip", js: true do
     visit computer_path
 
-    all('td.board_square')[10].click
+    find('td.board_square21').click
 
     within(".board_table") { expect(page.all("div.chip").count).to eql(2) } 
   end
@@ -13,25 +13,25 @@ feature "Random computer player" do
     visit computer_path
     place_ten_chips = false
     placed_chips = []
-    possible_points = [39, 23, 15, 40, 32, 8, 39, 35, 27, 53, 52, 50, 49, 13, 12, 10, 9]
+    possible_points = [5, 73, 71, 3, 63, 53, 34, 33, 46, 46, 26, 16, 51, 41, 21, 11]
     until place_ten_chips
       point = possible_points.pop
-      unless all('td.board_square')[point].has_css?("div.chip")
-        all('td.board_square')[point].click
+      unless find("td.board_square#{point}").has_css?("div.chip")
+        find("td.board_square#{point}").click
         placed_chips << point
       end
       place_ten_chips = true if placed_chips.length >= 10
     end
     
-    all('td.board_square')[placed_chips[9]].click
-    all('td.board_square')[47].click
+    find("td.board_square#{placed_chips[9]}").click
+    find('td.board_square75').click
 
     expect(page.all("div.chip").count).to eql(20)
     within(".board_table") do 
-      within(page.all('td.board_square')[47]) { expect(page).to have_css "div.chip" }
+      within(page.find('td.board_square75')) { expect(page).to have_css "div.chip" }
     end 
     within(".board_table") do
-      within(page.all('td.board_square')[placed_chips[9]]) { expect(page).to_not have_css "div.chip" }
+      within(page.find("td.board_square#{placed_chips[9]}")) { expect(page).to_not have_css "div.chip" }
     end 
   end
 end

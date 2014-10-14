@@ -33,13 +33,13 @@ feature "Multiplayer Game" do
   end
 
   scenario "Second player should not be able to place a chip", js: true do
-    @user_2.all('td.board_square')[10].click
+    @user_2.find('td.board_square21').click
 
     @user_2.within(".board_table") { expect(@user_2.all("div.chip").count).to eql(0) }
   end
 
   scenario "First play adds a chip", js: true do
-    @user_1.all('td.board_square')[8].click
+    @user_1.find('td.board_square1').click
     sleep(3.seconds) #Wait for user_2 board to update
     @user_1.within(".board_table") { expect(@user_1.all("div.chip").count).to eql(1) }
     @user_2.within(".board_table") { expect(@user_2.all("div.chip").count).to eql(1) }
