@@ -23,9 +23,13 @@ Live version: http://network-game.herokuapp.com
 ## Testing
 
 Tests are written in Rspec and Jasmine. To run rspec tests:
+
     rspec spec/
+
 To run Jasmine tests:
+
     rake jasmine
+
 Go to [0.0.0.0:8888](http://0.0.0.0:8888). These tests the React components directly.
 
 ## TODO
