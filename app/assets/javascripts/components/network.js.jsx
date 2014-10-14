@@ -222,13 +222,9 @@ var Board = React.createClass({
         if (point == this.state.pendingStepMove) {
           type = "pending_" + type;
         }
-
-        if (this.state.winner == "white") {
-          if (this.state.networks.white.complete[0].indexOf(point) >= 0) {
-            extraClasses += " winner";
-          }
-        } else if (this.state.winner == "black") {
-          if (this.state.networks.black.complete[0].indexOf(point) >= 0) {
+        if (this.state.winner != "") {
+          var completeNetwork = this.state.networks[this.state.winner].complete[0];
+          if (completeNetwork.indexOf(point) >= 0) {
             extraClasses += " winner";
           }
         }
@@ -252,6 +248,16 @@ var Board = React.createClass({
       }
       var classString = "row" + j;
       board_rows.push(<tr key={j} className={classString}>{row}</tr>);
+    }
+    // Draw lines for complete network
+    if (this.state.winner != "") {
+      var completeNetwork = this.state.networks[this.state.winner].complete[0];
+      var table = document.getElementsByClassName("board_table")[0];
+      for (var i=0; i < completeNetwork.length - 1; i++) {
+        var line = createLine(table, completeNetwork[i], completeNetwork[i+1]);
+        var square = table.getElementsByClassName("board_square" + completeNetwork[i])[0];
+        square.appendChild(line);
+      }
     }
     return (
       <div>
