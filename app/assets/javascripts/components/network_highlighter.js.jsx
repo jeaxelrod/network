@@ -26,7 +26,7 @@ var NetworkHighlighter = React.createClass({
       for (var i=0; i < network.length; i++) {
         var coordinate = network[i];
         var table = document.getElementsByClassName("board_table")[0];
-        var square = table.getElementsByClassName("board_square " + coordinate)[0];
+        var square = table.getElementsByClassName("board_square" + coordinate)[0];
         square.className+= " winner";
       }
       return false;
