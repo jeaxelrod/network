@@ -1,6 +1,6 @@
 # [Network](http://network-game.herokuapp.com/)
 
-A [React](http://facebook.github.io/react) & [Ruby on Rails](http://rubyonrails.org/) implementation of Network,a connection game game published in Sid Sackson's *A Gamut of Games*.
+A [React](http://facebook.github.io/react) & [Ruby on Rails](http://rubyonrails.org/) implementation of Network,a connection game published in Sid Sackson's *A Gamut of Games*.
 
 Live version: http://network-game.herokuapp.com
 
