@@ -43,5 +43,7 @@ feature "Multiplayer Game" do
     sleep(3.seconds) #Wait for user_2 board to update
     @user_1.within(".board_table") { expect(@user_1.all("div.chip").count).to eql(1) }
     @user_2.within(".board_table") { expect(@user_2.all("div.chip").count).to eql(1) }
+    @user_1.current_window.close();
+    @user_2.current_window.close();
   end
 end
