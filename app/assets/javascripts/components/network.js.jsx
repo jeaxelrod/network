@@ -276,7 +276,7 @@ var BoardSquare = React.createClass({
   },
   render: function() {
     var chip;
-    var classes = "board_square" + " " + this.props.coordinate + " " + 
+    var classes = "board_square" + " board_square" + this.props.coordinate + " " + 
                   this.props.type + this.props.extraClasses;
     if (!this.props.inactive) {
       if (this.props.type == "white" || this.props.type == "pending_white") {
@@ -296,7 +296,7 @@ var BoardSquare = React.createClass({
 var Chip = React.createClass({
   render: function() {
     return (
-      <div className={this.props.color + " chip " + this.props.coordinate} ></div>
+      <div className={this.props.color + " chip chip" + this.props.coordinate} ></div>
     );
   }
 });
