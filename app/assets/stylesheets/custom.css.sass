@@ -16,15 +16,23 @@ $light-blue-hover: #689DC8
 
 .light-gray
   color: $light-gray
-
+.gray 
+  color: $gray
+.black
+  color: black
 .dark-gray
   color: $dark-gray
 .yellow
   color: $yellow
 
+body
+  font-size: 10px
+  font-family: Sans-Serif
+  color: $black
+
 .board-title
   padding-left: 50px
-  font-size: 40px
+  font-size: 4em 
   color: $black
 
 .board_table
@@ -80,9 +88,9 @@ $light-blue-hover: #689DC8
   margin-left: 20px
   color: $black
 .board_header h1
-  font-size: 40px
+  font-size: 4em 
 .board_header h2
-  font-size: 30px
+  font-size: 3em
 
 .board_header h2 .white_turn
   color: $gray
@@ -114,80 +122,109 @@ $light-blue-hover: #689DC8
   margin-left: 25px
 
 /* Styling for the tutorial */
-.tutorial h1
-  font-size: 40px
-  margin-bottom: 20px
-  margin-top: 40px
-  text-align: center
-.tutorial p
-  font-size: 20px
-.tutorial .board_table
-  float: none
-  display: inline-block
-.tutorial .chip_table
-  border-collapse: separate
-  border-spacing: 1px
-.tutorial .chip_table td
-  background-color: white
-  &:hover
-    background-color: white
-.chip_table td .white
-  background-color: white
-.tutorial .white_team,
-.tutorial .black_team
-  display: inline-block
-
 .tutorial
   width: 670px
   margin: auto
-.tutorial .board_header
-  float: right 
-.tutorial .board_header h1
-  margin-bottom: 0
-  margin-top: 0
-.tutorial .blue
-  color: $light-gray-highlight
-.tutorial .red
-  color: $light-red 
-.white_board .board_table td.inactive,
-.black_board .board_table td.inactive
-  background-color: white
-.white_board .board_table td,
-.goal_areas  .board_table td.white_goal
-  background-color: $light-gray-highlight
-  &:hover
-    background-color: $gray-highlight
-.white_board .board_table td.white_goal
-  background-color: $light-blue 
-  &:hover
-    background-color: $light-blue-hover 
-.white_board .board_table td.black_goal,
-  background-color: $dark-gray 
-  &:hover
-    background-color: $dark-gray-highlight
-.black_board .board_table td,
-.goal_areas  .board_table td.black_goal
-  background-color: $light-red 
-  &:hover
-    background-color: $light-red-hover 
-.black_board .board_table td.white_goal
-  background-color: $light-gray 
-  &:hover
+  h1
+    font-size: 6em 
+    margin-bottom: 40px
+    margin-top: 60px
+    text-align: center
+  h2
+    font-size: 3em
+    margin: 40px 0 10px 0
+    text-align: center
+  p
+    font-size: 2em
+  .board_table
+    float: none
+    display: inline-block
+  .chip_table
+    border-collapse: separate
+    border-spacing: 1px
+  .chip_table td
+    background-color: white
+    &:hover
+      background-color: white
+  .chip_table td .white
+    background-color: white
+  .board_header
+    float: right 
+  .board_header h1
+    margin-bottom: 0
+    margin-top: 0
+  .board_header h2
+    text-align: left
+    margin: 0 0 10px 0
+  .blue
+    color: $light-gray-highlight
+  .red
+    color: $light-red 
+
+/* Tutorial teams page */
+.tutorial
+  .two_teams
+    margin: 20px 0
+  .team_labels
+    margin: auto
+    width: 383px
+  .white_team,
+  .black_team
+    display: inline-block
+    margin: 0 20px
+  .black_team p,
+  .white_team p
+    font-size: 6em
+    text-align: center
+  .team_chips
+    margin: auto
+    width: 544.8px
+
+/* Tutorial board page */
+.tutorial
+  .goal_area h2
+    margin: 0 0 5px 0
+  .goal_area h2:nth-child(4)
+    margin-bottom: 10px
+  .white_board .board_table td.inactive,
+  .black_board .board_table td.inactive
+    background-color: white
+  .white_board .board_table td,
+  .goal_areas  .board_table td.white_goal
     background-color: $light-gray-highlight
-.black_board .board_table td.black_goal
-  background-color: $red 
-  &:hover
-    background-color: $red-hover 
-.tutorial .mini_board
-  margin: 10px
-  border-collapse: separate
-  border-spacing: 1px
-  display: inline-block
-.tutorial .mini_board td
-  color: white
-  font-size: 50px
-  text-align: center
-  font-family: arial
-  cursor: default 
-  height: 50px
-  width: 50px
+    &:hover
+      background-color: $gray-highlight
+  .white_board .board_table td.white_goal
+    background-color: $light-blue 
+    &:hover
+      background-color: $light-blue-hover 
+  .white_board .board_table td.black_goal,
+    background-color: $dark-gray 
+    &:hover
+      background-color: $dark-gray-highlight
+  .black_board .board_table td,
+  .goal_areas  .board_table td.black_goal
+    background-color: $light-red 
+    &:hover
+      background-color: $light-red-hover 
+  .black_board .board_table td.white_goal
+    background-color: $light-gray 
+    &:hover
+      background-color: $light-gray-highlight
+  .black_board .board_table td.black_goal
+    background-color: $red 
+    &:hover
+      background-color: $red-hover 
+  .mini_board
+    margin: 10px
+    border-collapse: separate
+    border-spacing: 1px
+    display: inline-block
+  .mini_board td
+    color: white
+    font-size: 50px
+    text-align: center
+    font-family: arial
+    cursor: default 
+    height: 50px
+    width: 50px

@@ -50,10 +50,10 @@
       </tbody>
     </table>
     <p>If a network included these chips, it wouldn't be valid because it doesn't change directions after the first connection</p>
-    <p>Let's look at a valid network</p>
+    <h2>Complete Networks</h2>
     <%= react_component "Board", type: "local", id: @network_board_id, player: "white", chips: @network_chips %>
+    <p>Click on the numbers to view complete networks</p>
     <%= react_component "NetworkHighlighter", network: @networks %>
-    <p><%= @networks[:black] %></p>
 
 </div>
 

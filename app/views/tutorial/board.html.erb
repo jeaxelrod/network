@@ -1,18 +1,18 @@
 <div class="tutorial">
   <div class="game_board goal_area">
-    <h1>This is the game board</h1>
-    <p><span class="light-gray">This</span> is white's goal area</p>
-    <p><span class="dark-gray">This</span> is black's goal area</p>
+    <h1>The Game Board</h1>
+    <h2><span class="light-gray">This</span> is white's goal</h2>
+    <h2><span class="black">This</span> is black's goal</h2>
+    <h2>Each color cannot play in their opponent's goal.</h2>
     <%= react_component 'Board', type: "local", id: @board_id, player: "white" %>
-    <p>Each color cannot play in their opponent's goal area.</p>
   </div>
   <div class="game_board white_board">
-    <h1><span class="blue">Blue</span> is where you can place white chips</h1>
+    <h2><span class="blue">Blue</span> is where you can place white chips</h2>
     <%= react_component 'Board', type: "local", id: @white_board_id, player: "white" %>
   </div>
   <div class="game_board black_board">
-    <h1><span class="red">Red</span> is where you can place black chips</h1>
+    <h2><span class="red">Red</span> is where you can place black chips</h2>
     <%= react_component 'Board', type: "local", id: @black_board_id, player: "black", turn: "black" %>
   </div>
-  <%= link_to "Next: Chip Placement", tutorial_chip_placement_path %>
+  <h2><%= link_to "Next: Chip Placement", tutorial_chip_placement_path %></h2>
 </div>

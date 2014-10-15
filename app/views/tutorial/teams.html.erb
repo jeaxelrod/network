@@ -1,52 +1,57 @@
 <div class="tutorial">
-  <h1>Tutorial</h1>
-  <div class="two_teams 1">
-    <p>There are two teams</p>
-    <div class="white_team"><p>White <div class="chip white"></div></p></div>
-    <div class="black_team"><p>Black <div class="chip black"></div></p></div>
+  <h1>Introduction</h1>
+  <div class="two_teams">
+    <h2>There are two teams</h2>
+    <div class="team_labels">
+      <div class="white_team"><p class="gray">White</p></div>
+      <div class="black_team"><p class="black">Black</p></div>
+    </div>
   </div>
   <div class="ten_chips">
-    <p>Each team gets 10 chips</p>
-    <div class="white_team">
-      <table class="chip_table">
-        <tbody>
-          <tr>
-            <td><div class="white chip"></div></td>
-            <td><div class="white chip"></div></td>
-            <td><div class="white chip"></div></td>
-            <td><div class="white chip"></div></td>
-            <td><div class="white chip"></div></td>
-          </tr>
-          <tr>
-            <td><div class="white chip"></div></td>
-            <td><div class="white chip"></div></td>
-            <td><div class="white chip"></div></td>
-            <td><div class="white chip"></div></td>
-            <td><div class="white chip"></div></td>
-          </tr>
-        </tbody>
-      </table>
+    <h2>Each team gets 10 chips</h2>
+    <div class="team_chips">
+      <div class="white_team">
+        <table class="chip_table">
+          <tbody>
+            <tr>
+              <td><div class="white chip"></div></td>
+              <td><div class="white chip"></div></td>
+              <td><div class="white chip"></div></td>
+              <td><div class="white chip"></div></td>
+              <td><div class="white chip"></div></td>
+            </tr>
+            <tr>
+              <td><div class="white chip"></div></td>
+              <td><div class="white chip"></div></td>
+              <td><div class="white chip"></div></td>
+              <td><div class="white chip"></div></td>
+              <td><div class="white chip"></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="black_team">
+        <table class="chip_table">
+          <tbody>
+            <tr>
+              <td><div class="black chip"></div></td>
+              <td><div class="black chip"></div></td>
+              <td><div class="black chip"></div></td>
+              <td><div class="black chip"></div></td>
+              <td><div class="black chip"></div></td>
+            </tr>
+            <tr>
+              <td><div class="black chip"></div></td>
+              <td><div class="black chip"></div></td>
+              <td><div class="black chip"></div></td>
+              <td><div class="black chip"></div></td>
+              <td><div class="black chip"></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-    <div class="black_team">
-      <table class="chip_table">
-        <tbody>
-          <tr>
-            <td><div class="black chip"></div></td>
-            <td><div class="black chip"></div></td>
-            <td><div class="black chip"></div></td>
-            <td><div class="black chip"></div></td>
-            <td><div class="black chip"></div></td>
-          </tr>
-          <tr>
-            <td><div class="black chip"></div></td>
-            <td><div class="black chip"></div></td>
-            <td><div class="black chip"></div></td>
-            <td><div class="black chip"></div></td>
-            <td><div class="black chip"></div></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <p>White move first</p>
-    <%= link_to "Next: The Board", tutorial_board_path %>
+  </div>
+  <h2>White move first</h2>
+  <h2><%= link_to "Next: The Board", tutorial_board_path %></h2>
 </div>
