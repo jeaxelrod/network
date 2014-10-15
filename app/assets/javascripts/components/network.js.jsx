@@ -73,7 +73,7 @@ var Board = React.createClass({
           return false;
         }
       } else if (this.state.turn == "black") {
-        var excluded_points = [1, 2, 3, 4, 5, 6, 71, 73, 74, 75, 76];
+        var excluded_points = [1, 2, 3, 4, 5, 6, 71, 72, 73, 74, 75, 76];
         if (excluded_points.indexOf(point) > -1) {
           return false;
         }
