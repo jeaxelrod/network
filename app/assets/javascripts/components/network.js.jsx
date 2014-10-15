@@ -257,6 +257,14 @@ var Board = React.createClass({
       var classString = "row" + j;
       board_rows.push(<tr key={j} className={classString}>{row}</tr>);
     }
+    // Draw lines for complete network
+    if (this.state.winner != "" && this.isMounted()) {
+      var completeNetwork = this.state.networks[this.state.winner].complete[0];
+      var table = this.getDOMNode();
+      for (var i=0; i < completeNetwork.length - 1; i++) {
+        var line = createLine(table, completeNetwork[i], completeNetwork[i+1]);
+      }
+    }
     return (
       <div>
         <BoardHeader  

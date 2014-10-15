@@ -139,4 +139,22 @@ feature "Board structure" do
     within(page.find("td.board_square25")) { expect(page).to_not have_css "div.chip" }
     within(page.find("td.board_square35")) { expect(page).to have_css "div.chip" }
   end
+  scenario "Finishing a game", js: true do
+    visit local_path
+
+    find('td.board_square1').click
+    find('td.board_square10').click
+    find('td.board_square21').click
+    find('td.board_square20').click
+    find('td.board_square23').click
+    find('td.board_square40').click
+    find('td.board_square41').click
+    find('td.board_square50').click
+    find('td.board_square43').click
+    find('td.board_square17').click
+    find('td.board_square71').click
+
+    expect(page).to have_css ".winner"
+    expect(page).to have_css ".line"
+  end
 end
