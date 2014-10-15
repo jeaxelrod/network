@@ -2,58 +2,73 @@
   <h1>How to Win</h1>
 
   <div class="winning">
-    <h2>Making Networks</h2>
-    <p>The player who makes a complete network first wins!</p>
-    <p>A network is a connected sequence of six or more chips that starts in one of your goal areas and ends in the other</p>
-    <p>Chips are connected to each if there is a clear path vertically, horizontally, or diagonally</p>
-    <p>Let's looks at some examples</p>
-    <table class="mini_board">
-      <tbody>
-        <tr class="row0">
-          <td class="board_square board_square0"><div class="chip white"></div></td>
-          <td class="board_square board_square10"></td>
-          <td class="board_square board_square20"><div class="chip white"></div></td>
-          <td class="board_square board_square30"></td>
-        </tr>
-        <tr class="row1">
-          <td class="board_square board_square1"><div class="chip black"></div></td>
-          <td class="board_square board_square11"></td>
-          <td class="board_square board_square21"></td>
-          <td class="board_square board_square31"></td>
-        </tr>
-        <tr class="row2">
-          <td class="board_square board_square2 highlight"><div class="chip white"></div></td>
-          <td class="board_square board_square12"></td>
-          <td class="board_square board_square22"></td>
-          <td class="board_square board_square32"><div class="chip white"></div></td>
-        </tr>
-        <tr class="row3">
-          <td class="board_square board_square3"></td>
-          <td class="board_square board_square12"><div class="chip white"></div></td>
-          <td class="board_square board_square22"></td>
-          <td class="board_square board_square32"></td>
-        </tr>
-      </tbody>
-    </table>
-    <p>There are three connections to the <span class="yellow">highlighted</span> chip. Notice that a black chip blocks one of the connections</p>
-    <p>Futhermore, a network cannot pass through the same chip twice</p>
-    <p>A network can only have the two chips in the goal area: the first and last chip in the network</p>
-    <p>And a network cannot pass through a chip without changing direction</p>
-    <table class="mini_board">
-      <tbody>
-        <tr class="row0">
-          <td class="board_square board_square0"><div class="chip white"></div></td>
-          <td class="board_square board_square10"><div class="chip white"></div></td>
-          <td class="board_square board_square20"></td>
-          <td class="board_square board_square30"><div class="chip white"></div></td>
-        </tr>
-      </tbody>
-    </table>
-    <p>If a network included these chips, it wouldn't be valid because it doesn't change directions after the first connection</p>
-    <h2>Complete Networks</h2>
-    <%= react_component "Board", type: "local", id: @network_board_id, player: "white", chips: @network_chips %>
-    <p>Click on the numbers to view complete networks</p>
-    <%= react_component "NetworkHighlighter", network: @networks %>
-
+    <h2>Connections</h2>
+    <h3>Chips are connected to each other if there is a clear path vertically, horizontally, or diagonally</h3>
+    <div class="example1">
+      <div class="example_board">
+        <table class="mini_board network_board1">
+          <tbody>
+            <tr class="row0">
+              <td class="board_square board_square0"><div class="chip white"></div></td>
+              <td class="board_square board_square10"></td>
+              <td class="board_square board_square20"><div class="chip white"></div></td>
+              <td class="board_square board_square30"></td>
+            </tr>
+            <tr class="row1">
+              <td class="board_square board_square1"><div class="chip black"></div></td>
+              <td class="board_square board_square11"></td>
+              <td class="board_square board_square21"></td>
+              <td class="board_square board_square31"></td>
+            </tr>
+            <tr class="row2">
+              <td class="board_square board_square2"><div class="chip white"></div></td>
+              <td class="board_square board_square12"></td>
+              <td class="board_square board_square22"></td>
+              <td class="board_square board_square32"><div class="chip white"></div></td>
+            </tr>
+            <tr class="row3">
+              <td class="board_square board_square3"></td>
+              <td class="board_square board_square13"><div class="chip white"></div></td>
+              <td class="board_square board_square23"></td>
+              <td class="board_square board_square33"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="example_explanation">
+        <p>There are three connections</p>
+        <p>Notice that a black chip blocks one of the connections</p>
+      </div>
+      <script>
+        createLinesTutorial();
+      </script>
+    </div>
+    <div class="network">
+      <h2>A Network</h2>
+      <li>A connected sequence of six or more chips that starts in one of your goal areas and ends in the other</li>
+      <ul>
+        <li>It cannot pass through the same chip twice</li>
+        <li>It can only have the two chips in the goal area: the first and last chip in the network</li>
+        <li>It cannot pass through a chip without changing direction</li>
+      <table class="mini_board">
+        <tbody>
+          <tr class="row0">
+            <td class="board_square board_square0"><div class="chip white"></div></td>
+            <td class="board_square board_square10"><div class="chip white"></div></td>
+            <td class="board_square board_square20"></td>
+            <td class="board_square board_square30"><div class="chip white"></div></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="example_explanation">
+        <p>A network can't include all three chips because the direction doesn't change after the first connection</p>
+      </div>
+      <h2>The player who completes a network first wins!</h2>
+    </div>
+    <h3>Example networks</h3>
+    <%= react_component "NetworkHighlighter", network: @complete_networks %>
+    <%= react_component "Board", type: "local", id: @network_board_id, player: "black", turn: "black", chips: @network_chips, networks: @networks, winner: "black" %>
+    <h2>That's it. Try a game of network with <%= link_to "a random move generator", computer_path %></h2>
+  </div> 
 </div>
 

@@ -15,7 +15,8 @@ var NetworkHighlighter = React.createClass({
       network = this.state.white_network[index];
     }
     return function() {
-      var winners = document.querySelectorAll("td.winner");
+      var table = document.getElementsByClassName("board_table")[0];
+      var winners = table.querySelectorAll("td.winner");
       //Erase previous highlighted networks
       for (var i=0; i < winners.length; i++) {
         var square = winners[i];
@@ -23,17 +24,15 @@ var NetworkHighlighter = React.createClass({
 
       }
       //Erase all lines
-      var lines = document.querySelectorAll("div.line");
+      var lines = table.querySelectorAll("div.line");
       for (var i=0; i < lines.length; i++) {
         lines[i].parentNode.removeChild(lines[i]);
       }
       for (var i=0; i < network.length; i++) {
         var coordinate = network[i];
-        var table = document.getElementsByClassName("board_table")[0];
         var square = table.getElementsByClassName("board_square" + coordinate)[0];
         if ( i < network.length - 1) {
           var line = createLine(table, coordinate, network[i+1]);
-          square.appendChild(line);
         }
         square.className+= " winner";
       }
@@ -61,7 +60,6 @@ var NetworkHighlighter = React.createClass({
     }
     return (
       <div className="network_highlighter">
-        <h2 className="sub_title">Network</h2>
         <div className="network_links">
           <p>Black: {black_links}</p>
           <p>White: {white_links}</p>

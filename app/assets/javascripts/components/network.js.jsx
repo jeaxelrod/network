@@ -10,18 +10,26 @@ var Board = React.createClass({
     }
     return {
       chips: this.props.chips || {"white": [], "black": []},
-      networks: {"white": {"incomplete": [], "complete": []} , 
+      networks: this.props.networks || {"white": {"incomplete": [], "complete": []} , 
                  "black": {"incomplete": [], "complete": []}},
       player: this.props.player, //Color of player 
       turn: this.props.turn || "white", //color of current turn
       pendingStepMove: null,
       stepMoveTime: stepMoveTime,
-      winner: ""
+      winner: this.props.winner || ""
     };
   },
   componentDidMount: function() {
     if (this.props.type == "online") {
       setInterval(this.updateGame, 3000);
+    }
+    // Draw lines for complete network
+    if (this.state.winner != "") {
+      var completeNetwork = this.state.networks[this.state.winner].complete[0];
+      var table = this.getDOMNode();
+      for (var i=0; i < completeNetwork.length - 1; i++) {
+        var line = createLine(table, completeNetwork[i], completeNetwork[i+1]);
+      }
     }
   },
   boardClick: function(point) {
@@ -248,16 +256,6 @@ var Board = React.createClass({
       }
       var classString = "row" + j;
       board_rows.push(<tr key={j} className={classString}>{row}</tr>);
-    }
-    // Draw lines for complete network
-    if (this.state.winner != "") {
-      var completeNetwork = this.state.networks[this.state.winner].complete[0];
-      var table = document.getElementsByClassName("board_table")[0];
-      for (var i=0; i < completeNetwork.length - 1; i++) {
-        var line = createLine(table, completeNetwork[i], completeNetwork[i+1]);
-        var square = table.getElementsByClassName("board_square" + completeNetwork[i])[0];
-        square.appendChild(line);
-      }
     }
     return (
       <div>

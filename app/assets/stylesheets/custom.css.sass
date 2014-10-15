@@ -77,6 +77,8 @@ h2
     background-color: $dark-gray-highlight
 .board_table td.winner
   background-color: $gray-highlight
+  &:hover
+    background-color: $dark-gray-highlight
 
 .board_table td .chip,
 .current_chips .chip,
@@ -166,6 +168,8 @@ h2
     font-size: 3em
     margin: 40px 0 10px 0
     text-align: center
+  h3
+    font-size: 2.5em
   p
     font-size: 2em
   .board_table
@@ -193,7 +197,6 @@ h2
   .red
     color: $light-red 
   .mini_board
-    margin: 10px
     border-collapse: separate
     border-spacing: 1px
     display: inline-block
@@ -263,7 +266,6 @@ h2
     &:hover
       background-color: $red-hover 
 
-
 /* Tutorial chip placement */
 .tutorial
   .chip_groups,
@@ -271,7 +273,6 @@ h2
     margin: 40px auto
   .chip_groups h3,
   .step_move h3
-    font-size: 2.5em
     margin: 15px 0 10px 0
   .chip_groups p
     font-size: 2em
@@ -285,3 +286,39 @@ h2
     text-align: center
   p.step_move_descript
     margin-bottom: 20px
+
+/* Tutorial Networks */
+.tutorial
+  .winning ul
+    list-style: disc
+    margin: 10px 0
+  .winning li
+    font-size: 2.5em
+    margin: 10px 0
+  .winning h2
+    font-size: 3.5em
+  .winning .board_header h2
+    font-size: 3em
+  .example_board
+    display: inline-block
+  .example_explanation
+    display: inline-block
+    width: 440px
+    vertical-align: top
+  .example_explanation p
+    margin-bottom: 10px
+  .example1
+    margin-top: 15px
+  .network_links a
+    padding: 3.5px 12px 2.4px 
+    background-color: $gray-highlight
+    color: white
+    text-decoration: none
+    margin: 0 2px
+    font-size: 10px
+    vertical-align: middle 
+    &:hover
+      background-color: $dark-gray-highlight
+  .network_highlighter
+    margin: 10px 0
+
