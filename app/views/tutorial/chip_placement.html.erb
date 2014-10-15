@@ -1,74 +1,77 @@
 <div class="tutorial">
   <h1>Chip Placement</h1>
-  <p>There are two special rules of chip placement</p>
+  <h2>There are two special rules of chip placement</h2>
   <div class="chip_groups">
-    <p>Rule 1: You can't have groups of more then two adjacent chips</p>
-    <div class="examples_groups">
+    <h3>Rule 1: Groups of more than two adjacent chips are invalid</h3>
+    <div class="example_groups">
       <p>The X's represent invalid Moves
-      <table class="mini_board">
-        <tbody>
-          <tr class="row0">
-            <td class="board_square board_square0"><div class="chip white"></div></td>
-            <td class="board_square board_square10">X</td>
-            <td class="board_square board_square20"></td>
-          </tr>
-          <tr class="row1">
-            <td class="board_square board_square1"><div class="chip white"></div></td>
-            <td class="board_square board_square11">X</td>
-            <td class="board_square board_square21"></td>
-          </tr>
-          <tr class="row2">
-            <td class="board_square board_square2">X</td>
-            <td class="board_square board_square12">X</td>
-            <td class="board_square board_square22"><div class="chip white"></div></td>
-          </tr>
-        </tbody>
-      </table>
-      <table class="mini_board">
-        <tbody>
-          <tr class="row0">
-            <td class="board_square board_square0"></td>
-            <td class="board_square board_square10">X</td>
-            <td class="board_square board_square20"></td>
-          </tr>
-          <tr class="row1">
-            <td class="board_square board_square1"><div class="chip white"></div></td>
-            <td class="board_square board_square11">X</td>
-            <td class="board_square board_square21"><div class="chip white"></div></td>
-          </tr>
-          <tr class="row2">
-            <td class="board_square board_square2"></td>
-            <td class="board_square board_square12">X</td>
-            <td class="board_square board_square22"></td>
-          </tr>
-        </tbody>
-      </table>
-      <table class="mini_board">
-        <tbody>
-          <tr class="row0">
-            <td class="board_square board_square0">X</td>
-            <td class="board_square board_square10">X</td>
-            <td class="board_square board_square20">X</td>
-          </tr>
-          <tr class="row1">
-            <td class="board_square board_square1">X</td>
-            <td class="board_square board_square11"><div class="chip white"></div></td>
-            <td class="board_square board_square21">X</td>
-          </tr>
-          <tr class="row2">
-            <td class="board_square board_square2"><div class="chip white"></div></td>
-            <td class="board_square board_square12">X</td>
-            <td class="board_square board_square22">X</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="example_tables">
+        <table class="mini_board">
+          <tbody>
+            <tr class="row0">
+              <td class="board_square board_square0"><div class="chip white"></div></td>
+              <td class="board_square board_square10">X</td>
+              <td class="board_square board_square20"></td>
+            </tr>
+            <tr class="row1">
+              <td class="board_square board_square1"><div class="chip white"></div></td>
+              <td class="board_square board_square11">X</td>
+              <td class="board_square board_square21"></td>
+            </tr>
+            <tr class="row2">
+              <td class="board_square board_square2">X</td>
+              <td class="board_square board_square12">X</td>
+              <td class="board_square board_square22"><div class="chip white"></div></td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="mini_board">
+          <tbody>
+            <tr class="row0">
+              <td class="board_square board_square0"></td>
+              <td class="board_square board_square10">X</td>
+              <td class="board_square board_square20"></td>
+            </tr>
+            <tr class="row1">
+              <td class="board_square board_square1"><div class="chip white"></div></td>
+              <td class="board_square board_square11">X</td>
+              <td class="board_square board_square21"><div class="chip white"></div></td>
+            </tr>
+            <tr class="row2">
+              <td class="board_square board_square2"></td>
+              <td class="board_square board_square12">X</td>
+              <td class="board_square board_square22"></td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="mini_board">
+          <tbody>
+            <tr class="row0">
+              <td class="board_square board_square0">X</td>
+              <td class="board_square board_square10">X</td>
+              <td class="board_square board_square20">X</td>
+            </tr>
+            <tr class="row1">
+              <td class="board_square board_square1">X</td>
+              <td class="board_square board_square11"><div class="chip white"></div></td>
+              <td class="board_square board_square21">X</td>
+            </tr>
+            <tr class="row2">
+              <td class="board_square board_square2"><div class="chip white"></div></td>
+              <td class="board_square board_square12">X</td>
+              <td class="board_square board_square22">X</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
   <div class="step_move">
-    <p>Rule 2: Step moves</p>
-    <p>Each player only gets ten chips. After all ten chips have been placed on the board you must execute a step move</p>
-    <p>In a step move, you move one of your chips to a different square. Try it below by clicking on one of your chips</p>
+    <h3>Rule 2: Perform a step move after all ten chips are placed</h3>
+    <p class="step_move_descript">In a step move, you move one of your placed chips to a different square.</p>
+    <p>Try it below by clicking on one of your chips</p>
     <%= react_component "Board", type: "local", id: @step_move_board_id, player: "white", chips: @chips %>
+    <p>Tip: When a chip is highlighted, you can click it again to cancel that move</p>
   </div>
-  <%= link_to "Next: How to Win", tutorial_network_path %>
+  <h2><%= link_to "Next: How to Win", tutorial_network_path %></h2>
 </div>

@@ -7,6 +7,7 @@ $light-gray-highlight: #7BA9CF
 $dark-gray: #555F61
 $dark-gray-highlight: #36678D
 $yellow: #CFCB7B
+$yellow-highlight: #C1BC56
 $red: #BA4449
 $red-hover: #924549
 $light-red: #CF7B7F
@@ -55,9 +56,13 @@ h2
     background-color: $gray-highlight //This is a mixture of #0074D9 and $gray
 
 .board_table td.pending_white, 
+.board_table td.pending_white.white_goal,
 .board_table td.pending_black,
+.board_table td.pending_black.black_goal,
 .mini_board td.highlight
   background-color: $yellow
+  &:hover
+    background-color: $yellow-highlight
 
 .board_table td.inactive
   background-color: white
@@ -128,7 +133,7 @@ h2
 
 /* Index */
 .index
-  height: 350px 
+  height: 380px 
   margin: auto
   position: absolute
   top: 0
@@ -187,6 +192,19 @@ h2
     color: $light-gray-highlight
   .red
     color: $light-red 
+  .mini_board
+    margin: 10px
+    border-collapse: separate
+    border-spacing: 1px
+    display: inline-block
+  .mini_board td
+    color: white
+    font-size: 50px
+    text-align: center
+    font-family: arial
+    cursor: default 
+    height: 50px
+    width: 50px
 
 /* Tutorial teams page */
 .tutorial
@@ -216,6 +234,8 @@ h2
   .white_board .board_table td.inactive,
   .black_board .board_table td.inactive
     background-color: white
+    &:hover
+      background-color: white
   .white_board .board_table td,
   .goal_areas  .board_table td.white_goal
     background-color: $light-gray-highlight
@@ -242,16 +262,26 @@ h2
     background-color: $red 
     &:hover
       background-color: $red-hover 
-  .mini_board
-    margin: 10px
-    border-collapse: separate
-    border-spacing: 1px
-    display: inline-block
-  .mini_board td
-    color: white
-    font-size: 50px
+
+
+/* Tutorial chip placement */
+.tutorial
+  .chip_groups,
+  .step_nove
+    margin: 40px auto
+  .chip_groups h3,
+  .step_move h3
+    font-size: 2.5em
+    margin: 15px 0 10px 0
+  .chip_groups p
+    font-size: 2em
+  .example_groups
+    margin: auto
     text-align: center
-    font-family: arial
-    cursor: default 
-    height: 50px
-    width: 50px
+  .example_tables
+    display: inline-block
+  .step_move p
+    margin: 10px
+    text-align: center
+  p.step_move_descript
+    margin-bottom: 20px
