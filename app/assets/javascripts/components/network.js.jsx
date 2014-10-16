@@ -59,7 +59,7 @@ var Board = React.createClass({
     if (chips.black.length >= 10) {
       var stepMoveTime = true;
     }
-    this.setAvailableNetworks(chips);
+    this.placeChip(chips);
     this.setState({chips: chips, stepMoveTime: stepMoveTime});
   },
   validMove: function(point) {
@@ -143,7 +143,7 @@ var Board = React.createClass({
           var chip = colored_chips[k];
           if (prev_point == chip) {
             colored_chips[k] = point;
-            this.setAvailableNetworks(chips);
+            this.placeChip(chips);
             this.setState({chips: chips, pendingStepMove: null});
             return;
           }
@@ -151,7 +151,7 @@ var Board = React.createClass({
       }
     }
   },
-  setAvailableNetworks: function(chips) {
+  placeChip: function(chips) {
     var data = {'id': this.props.id, 'chips': chips, 'color': this.state.turn}
     $.ajax({
       url: "/placeChip.json",
