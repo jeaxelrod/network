@@ -1,15 +1,15 @@
 require 'rails_helper'
 
-feature "Random computer player" do
+feature "Computer player" do
   scenario "Adding a chip", js: true do
-    visit random_path
+    visit computer_path
 
     find('td.board_square21').click
 
     within(".board_table") { expect(page.all("div.chip").count).to eql(2) } 
   end
   scenario "Step moves", js: true do
-    visit random_path
+    visit computer_path
     place_ten_chips = false
     placed_chips = []
     possible_points = [5, 73, 71, 3, 63, 53, 34, 33, 46, 46, 26, 16, 51, 41, 21, 11]

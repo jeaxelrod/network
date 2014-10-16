@@ -8,7 +8,7 @@
   </div>
   <div class="game_board white_board">
     <h2><span class="blue">Blue</span> is where you can place white chips</h2>
-    <%= react_component 'Board', type: "local", id: @white_board_id, player: "white" %>
+    <%= react_component 'Board', type: "local", id: @white_board_id, player: "white", turn: "white" %>
   </div>
   <div class="game_board black_board">
     <h2><span class="red">Red</span> is where you can place black chips</h2>

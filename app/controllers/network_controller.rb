@@ -22,8 +22,14 @@ class NetworkController < ApplicationController
   def multiplayer
   end
 
-  def computer
+  def random 
     #Play against an AI
+    game = Board.new(game_type: "random")
+    game.save
+    @game_id = game.id
+  end
+
+  def computer 
     game = Board.new(game_type: "computer")
     game.save
     @game_id = game.id
@@ -73,27 +79,27 @@ class NetworkController < ApplicationController
     end
     @data = {}
     @chips = format_chips(params[:chips])
-    if game.game_type == "local"
-      network_finder = NetworkFinder.new(:chips => @chips)
-      @data[:networks] = {:white => network_finder.white, :black => network_finder.black}
+    case game.game_type
+    when "local"
       @data[:color] = params[:color] == "white" ? "black" : "white"
-      @game_id = game.id
-      @data[:chips] = @chips
-    elsif game.game_type == "computer"
+    when "computer"
+      computer_player = ComputerPlayer.new({:chips => @chips, :search_depth => 3})
+      move = computer_player.move(:black)
+      @chips[:black] << move.added_chip
+      @chips[:black].delete(move.deleted_chip)
+      @data[:color] = "white"
+    when "random"
       random_computer = RandomComputer.new(:chips => @chips)
       move = random_computer.move(:black)
       @chips[:black] << move.added_chip
       @chips[:black].delete(move.deleted_chip)
-      @data[:chips] = {:white => @chips[:white], :black => @chips[:black]}
-      network_finder = NetworkFinder.new(:chips => @chips)
-      @data[:networks] = {:white => network_finder.white, :black => network_finder.black}
       @data[:color] = "white";
-    elsif game.game_type == "multiplayer"
+    when "multiplayer"
       @data[:color] = params[:color] == "white" ? "black" : "white"
-      @data[:chips] = {:white => @chips[:white], :black => @chips[:black]}
-      network_finder = NetworkFinder.new(:chips => @chips)
-      @data[:networks] = {:white => network_finder.white, :black => network_finder.black}
     end
+    @data[:chips] = {:white => @chips[:white], :black => @chips[:black]}
+    network_finder = NetworkFinder.new(:chips => @chips)
+    @data[:networks] = {:white => network_finder.white, :black => network_finder.black}
     
     game.white = @chips[:white]
     game.black = @chips[:black]

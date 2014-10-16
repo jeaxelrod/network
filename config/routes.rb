@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   get "/local" => "network#local"
   get "/online" => "network#online"
   get "/computer" => "network#computer"
+  get "/random" => "network#random"
 
   get 'board' => 'board#show'
   post "/network/update" => "network#update"

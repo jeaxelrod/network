@@ -77,13 +77,10 @@ class ComputerPlayer
     return nil
   end
   def evaluate_board
-    puts @chips
     network_finder = NetworkFinder.new(chips: @chips)
     if network_finder.white[:complete].any?
-      puts -1
       return -1
     elsif network_finder.black[:complete].any?
-      puts 1
       return 1
     else
       num_non_goal_black_pairs = num_non_goal_pairs(:black)
@@ -92,10 +89,7 @@ class ComputerPlayer
       num_from_goal_white_pairs = num_pairs_from_goal(:white)
       black_points = num_from_goal_black_pairs * 2 + num_non_goal_black_pairs
       white_points = num_from_goal_white_pairs * 2 + num_non_goal_white_pairs
-      puts white_points
-      puts black_points
       score = black_points/20.0 - white_points/20.0
-      puts score
       return score
     end
   end
