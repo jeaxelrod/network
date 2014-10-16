@@ -37,4 +37,18 @@ RSpec.describe NetworkFinder, :type => :service do
       expect(@networks.black[:complete]).to_not include([57, 55, 35, 13, 33, 60])
     end
   end  
+  describe "invalid networks" do
+    it "should not find networks where it starts and stops in the same goal" do
+      chips = {:black => [], :white => [1, 3, 21, 23, 41, 43]}
+      network_finder = NetworkFinder.new(:chips => chips)
+
+      expect(network_finder.white[:complete]).to eql([])
+    end
+    it "should not find networks where it starts and stops in the same goal" do
+      chips = {:black => [10, 30, 12, 32, 14, 34], :white => []}
+      network_finder = NetworkFinder.new(:chips => chips)
+
+      expect(network_finder.black[:complete]).to eql([])
+    end
+  end
 end

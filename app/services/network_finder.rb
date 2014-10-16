@@ -181,9 +181,9 @@ class NetworkFinder
       if options[:goal]
         foreign_chips.push(own_chips.select { |a| !WHITE_GOAL_AREAS.include?(a) }).flatten!
         goal_area = WHITE_GOAL_AREAS.select do |point|
-          network[0] % 10 != point % 10
+          network[0] / 10 != point / 10
         end
-        own_chips = own_chips.select { |a| WHITE_GOAL_AREAS.include?(a) }
+        own_chips = own_chips.select { |a| goal_area.include?(a) }
       end
     end
     return foreign_chips, own_chips
