@@ -96,6 +96,8 @@ class NetworkController < ApplicationController
       @data[:color] = "white";
     when "multiplayer"
       @data[:color] = params[:color] == "white" ? "black" : "white"
+    when "tutorial"
+      @data[:color] = params[:color]
     end
     @data[:chips] = {:white => @chips[:white], :black => @chips[:black]}
     network_finder = NetworkFinder.new(:chips => @chips)
