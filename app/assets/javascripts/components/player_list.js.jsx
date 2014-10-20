@@ -75,8 +75,12 @@ var PlayerList = React.createClass({
                  <a href="#" data-id={player} onClick={this.clickPlayer}>Play</a></li>;
       }.bind(this));
     }
+    console.log(player_nodes);
+    if (player_nodes.length == 0) {
+      player_nodes.push(<li key={0}>No one online</li>)
+    }
     return (
-      <ul>{player_nodes}</ul>
+      <ul className="player_list">{player_nodes}</ul>
     );
   }
 });
