@@ -61,8 +61,9 @@ footer a
   vertical-align: middle 
   background-color: $gray 
   cursor: pointer
-  &:hover
-    background-color: $gray-highlight //This is a mixture of #0074D9 and $gray
+.board_table td:hover
+  background-color: $gray-highlight //This is a mixture of #0074D9 and $gray
+
 
 .board_table td.pending_white, 
 .board_table td.pending_white.white_goal,
@@ -204,6 +205,8 @@ footer a
   .board_header h1
     margin-bottom: 0
     margin-top: 0
+    text-align: left
+    font-size: 4em
   .board_header h2
     text-align: left
     margin: 0 0 10px 0
@@ -230,7 +233,7 @@ footer a
     margin: 20px 0
   .team_labels
     margin: auto
-    width: 322px
+    width: 383px
   .white_team,
   .black_team
     display: inline-block
