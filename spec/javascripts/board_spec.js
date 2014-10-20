@@ -49,7 +49,7 @@ describe('Network', function() {
                         networks: networks,
                         color: "black"}));
       }); 
-      instance.setAvailableNetworks({chips: {white: [3, 33, 11, 27], black: [10, 30, 44]}});
+      instance.placeChip({chips: {white: [3, 33, 11, 27], black: [10, 30, 44]}});
 
       expect($.ajax.calls.mostRecent().args[0].url).toEqual("/placeChip.json");
       expect(instance.state.networks.white.incomplete).toEqual([3, 33, 11]);
@@ -103,7 +103,7 @@ describe('Network', function() {
                         networks: networks,
                         color: "black"}));
       }); 
-      instance.setAvailableNetworks({chips: {white: [3, 33, 11, 27], black: [10, 30, 44]}});
+      instance.placeChip({chips: {white: [3, 33, 11, 27], black: [10, 30, 44]}});
 
       expect($.ajax.calls.mostRecent().args[0].url).toEqual("/placeChip.json");
       expect(instance.state.networks.white.incomplete).toEqual([3, 33, 11]);
@@ -197,7 +197,7 @@ describe('Network', function() {
                         networks: networks,
                         color: "black"}));
       }); 
-      instance.setAvailableNetworks({chips: {white: [3, 33, 11, 27], black: [10, 30, 44]}});
+      instance.placeChip({chips: {white: [3, 33, 11, 27], black: [10, 30, 44]}});
 
       expect($.ajax.calls.mostRecent().args[0].url).toEqual("/placeChip.json");
       expect(instance.state.networks.white.incomplete).toEqual([3, 33, 11]);
