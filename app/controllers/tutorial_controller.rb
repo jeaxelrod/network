@@ -12,7 +12,7 @@ class TutorialController < ApplicationController
     @white_board_id = white_board.id
     black_board = Board.new(game_type: "tutorial")
     black_board.save
-    @back_board_id = black_board.id
+    @black_board_id = black_board.id
   end
 
   def chip_placement

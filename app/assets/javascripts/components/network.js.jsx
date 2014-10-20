@@ -56,7 +56,7 @@ var Board = React.createClass({
     var chips = this.state.chips;
     var stepMoveTime = false;
     chips[this.state.turn].push(point);
-    if (chips.black.length >= 10) {
+    if (chips.black.length >= 10 || (chips.white.length >= 10 && chips.black.length < 9)) {
       var stepMoveTime = true;
     }
     this.placeChip(chips);
@@ -163,7 +163,7 @@ var Board = React.createClass({
         var chips = data.chips;
         var winner = this.setWinner(networks);
         var stepMoveTime = false;
-        if (chips.black && chips.black.length >= 10) {
+        if ((chips.black && chips.black.length >= 10) || this.state.stepMoveTime) {
           stepMoveTime = true;
         }
         this.setState({networks: networks, winner: winner, chips: chips, turn: data.color, stepMoveTime: stepMoveTime});
