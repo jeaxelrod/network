@@ -18,7 +18,7 @@ Live version: http://network-game.herokuapp.com
     cd network
     bundle install
     rake db:migrate
-    rail s
+    rails s
 
 ## Testing
 
@@ -36,6 +36,5 @@ Go to [0.0.0.0:8888](http://0.0.0.0:8888). These tests the React components dire
 
 * Fix issues of computer player
 * Improve the board evaluation function for the computer player 
-* Mobile support
 * General layout and content issues
 
